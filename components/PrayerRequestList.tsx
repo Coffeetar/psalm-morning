@@ -1,16 +1,26 @@
 
 type PrayerRequestListProps = {
-    
   prayerList: any[];
-  deletePrayerRequest: (id: string) => void;
-  saveAdminResponse: (id: string, response: string) => void;
-  markAsPrayed: (id: string) => void;
+
+  saveAdminResponse: (
+    id: string,
+    response: string
+  ) => void;
+
+  markAsPrayed: (
+    id: string
+  ) => void;
+
+  deletePrayerRequest: (
+    id: string
+  ) => void;
 };
 
 export default function PrayerRequestList({
   prayerList,
   saveAdminResponse,
   markAsPrayed,
+  deletePrayerRequest,
 }: PrayerRequestListProps) {
   return (
     <section style={{ marginTop: "24px" }}>
