@@ -70,14 +70,13 @@ async function loadTodayPsalm() {
 
     .select("*")
 
-    .eq("devotional_date", today)
-
-    .eq("is_published", true)
-
-    .single();
+.eq("is_published", true)
+.order("devotional_date", { ascending: false })
+.limit(1)
+.single();
 
 if (error) {
-  console.log("loadTodayPsalm error:", error.message);
+  setMessage(`오늘의 시편 로드 오류: ${error.message}`);
   setTodayPsalm(null);
   return;
 }
