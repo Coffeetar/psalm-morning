@@ -52,43 +52,25 @@ export default function PrayerRequestList({
 
             <small>{new Date(item.created_at).toLocaleString()}</small>
 
-            <textarea
-              defaultValue={item.admin_response || ""}
-              id={`response-${item.id}`}
-              placeholder="운영자 응답 입력"
-              style={{
-                display: "block",
-                width: "100%",
-                minHeight: "80px",
-                marginTop: "14px",
-                padding: "12px",
-                borderRadius: "12px",
-                border: "1px solid #ccc",
-                fontSize: "14px",
-              }}
-            />
+          <textarea
+  defaultValue={item.admin_response || ""}
+  data-response-id={item.id}
+  placeholder="운영자 응답 입력"
+/>
 
             <div style={{ marginTop: "12px" }}>
-              <button
-                type="button"
-                onClick={() => {
-                  const textarea = document.getElementById(
-                    `response-${item.id}`
-                  ) as HTMLTextAreaElement;
+          <button
+  type="button"
+  onClick={() => {
+    const textarea = document.querySelector(
+      `textarea[data-response-id="${item.id}"]`
+    ) as HTMLTextAreaElement;
 
-                  saveAdminResponse(item.id, textarea.value);
-                }}
-                style={{
-                  padding: "10px 16px",
-                  borderRadius: "12px",
-                  border: "none",
-                  background: "#2563eb",
-                  color: "white",
-                  cursor: "pointer",
-                }}
-              >
-                응답 저장
-              </button>
+    saveAdminResponse(item.id, textarea.value);
+  }}
+>
+  응답 저장
+</button>
 
               <button
                 type="button"
