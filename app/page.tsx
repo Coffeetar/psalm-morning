@@ -52,13 +52,22 @@ if (error) {
   setPrayerList(data || []);
 }
 async function loadTodayPsalm() {
-  const { data, error } = await supabase
-    .from("daily_psalms")
-    .select("*")
-    .eq("is_published", true)
-    .order("devotional_date", { ascending: false })
-    .limit(1)
-    .single();
+const today = new Intl.DateTimeFormat(
+  "en-CA",
+  {
+    timeZone: "Asia/Seoul",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }
+).format(new Date());
+
+const { data, error } = await supabase
+  .from("daily_psalms")
+  .select("*")
+  .eq("devotional_date", today)
+  .eq("is_published", true)
+  .single();
 
   if (error) {
     setDebugMessage(`Supabase error: ${error.message}`);
