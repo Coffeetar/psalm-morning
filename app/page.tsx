@@ -32,6 +32,7 @@ export default function HomePage() {
   const [message, setMessage] = useState("");
   const [prayerList, setPrayerList] = useState<any[]>([]);
   const [todayPsalm, setTodayPsalm] = useState<any>(null);
+  const [debugMessage, setDebugMessage] = useState("");
 useEffect(() => {
   loadTodayPsalm();
   loadPrayerRequests();
@@ -51,36 +52,21 @@ if (error) {
   setPrayerList(data || []);
 }
 async function loadTodayPsalm() {
-
-  const today = new Intl.DateTimeFormat("en-CA", {
-
-    timeZone: "Asia/Seoul",
-
-    year: "numeric",
-
-    month: "2-digit",
-
-    day: "2-digit",
-
-  }).format(new Date());
-
   const { data, error } = await supabase
-
     .from("daily_psalms")
-
     .select("*")
+    .eq("is_published", true)
+    .order("devotional_date", { ascending: false })
+    .limit(1)
+    .single();
 
-.eq("is_published", true)
-.order("devotional_date", { ascending: false })
-.limit(1)
-.single();
+  if (error) {
+    setDebugMessage(`Supabase error: ${error.message}`);
+    setTodayPsalm(null);
+    return;
+  }
 
-if (error) {
-  setMessage(`오늘의 시편 로드 오류: ${error.message}`);
-  setTodayPsalm(null);
-  return;
-}
-
+  setDebugMessage(`Loaded: ${data.devotional_date} / ${data.psalm_reference}`);
   setTodayPsalm(data);
 }
 async function handlePrayerSubmit() {
@@ -200,6 +186,11 @@ if (!todayPsalm) {
           운영자가 오늘의 말씀을 준비하고 있습니다 <br/>
           잠시 후 다시 확인해주세요.
         </p>
+        {debugMessage && (
+  <p style={{ marginTop: "16px", color: "#b91c1c" }}>
+    {debugMessage}
+  </p>
+)}
       </div>
     </main>
   );
