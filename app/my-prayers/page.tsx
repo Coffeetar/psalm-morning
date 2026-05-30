@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import BottomNav from "@/components/BottomNav";
 import {
   supabase,
 } from "@/lib/supabaseClient";
@@ -24,8 +25,16 @@ export default function MyPrayersPage() {
       return;
     }
 
-    setPrayer(data);
-    setMessage("");
+  setPrayer(data);
+
+if (data.admin_response && !data.is_response_read) {
+  await supabase
+    .from("prayer_requests")
+    .update({ is_response_read: true })
+    .eq("id", data.id);
+}
+
+setMessage("");
   }
   async function searchPrayerByCode(code: string) {
   const { data, error } = await supabase
@@ -40,8 +49,16 @@ export default function MyPrayersPage() {
     return;
   }
 
-  setPrayer(data);
-  setMessage("");
+setPrayer(data);
+
+if (data.admin_response && !data.is_response_read) {
+  await supabase
+    .from("prayer_requests")
+    .update({ is_response_read: true })
+    .eq("id", data.id);
+}
+
+setMessage("");
 }
 useEffect(() => {
   const savedCode =
@@ -129,33 +146,52 @@ useEffect(() => {
 
             <p>{prayer.request_text}</p>
 
-            {prayer.admin_response && (
-              <>
-                <p>
-                  <strong>운영자 응답</strong>
-                </p>
+     {prayer.admin_response && (
+  <div
+    style={{
+      marginTop: "14px",
+      padding: "14px",
+      borderRadius: "14px",
+      background: "#eff6ff",
+      border: "1px solid #bfdbfe",
+    }}
+  >
+    <strong>운영자 응답</strong>
 
-                <p>
-                  {prayer.admin_response}
-                </p>
-              </>
-            )}
+    <p style={{ marginTop: "8px", lineHeight: 1.7 }}>
+      {prayer.admin_response}
+    </p>
+  </div>
+)}
 
-            <p
-              style={{
-                color: prayer.is_prayed
-                  ? "#15803d"
-                  : "#92400e",
-                fontWeight: "bold",
-              }}
-            >
-              {prayer.is_prayed
-                ? "✓ 함께 기도했습니다"
-                : "기도 준비 중입니다"}
-            </p>
+<div
+  style={{
+    marginTop: "12px",
+    padding: "10px",
+    borderRadius: "12px",
+    background: prayer.is_prayed ? "#dcfce7" : "#fef3c7",
+    color: prayer.is_prayed ? "#166534" : "#92400e",
+    fontWeight: "bold",
+  }}
+>
+  {prayer.is_prayed
+    ? "✓ 이 기도 제목은 기도되었습니다"
+    : "기도 준비 중입니다"}
+</div>
+
+<p
+  style={{
+    marginTop: "12px",
+    fontSize: "13px",
+    color: "#78716c",
+  }}
+>
+  등록일: {new Date(prayer.created_at).toLocaleString()}
+</p>
           </div>
         )}
       </div>
+      <BottomNav />
     </main>
   );
 }

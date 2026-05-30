@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import BottomNav from "@/components/BottomNav";
 import {
   supabase,
 } from "@/lib/supabaseClient";
@@ -92,6 +93,7 @@ export default function ArchivePage() {
           ))
         )}
       </div>
+      <BottomNav />
     </main>
   );
 }

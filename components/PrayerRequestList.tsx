@@ -12,13 +12,19 @@ export default function PrayerRequestList({
   deletePrayerRequest,
 }: PrayerRequestListProps) {
   return (
+  
     <section style={{ marginTop: "24px" }}>
+      
       <p style={{ color: "#78716c" }}>현재 기도 제목 수: {prayerList.length}</p>
+      
 
       {prayerList.length === 0 ? (
+        
         <p>아직 등록된 기도 제목이 없습니다.</p>
+        
       ) : (
         prayerList.map((item) => (
+          
           <div
             key={item.id}
             style={{
@@ -30,6 +36,28 @@ export default function PrayerRequestList({
             }}
           >
             <p style={{ lineHeight: 1.7 }}>{item.request_text}</p>
+            {item.admin_response && (
+  <div
+    style={{
+      marginTop: "10px",
+      padding: "8px 12px",
+      borderRadius: "999px",
+      display: "inline-block",
+      background: item.is_response_read
+        ? "#dcfce7"
+        : "#dbeafe",
+      color: item.is_response_read
+        ? "#166534"
+        : "#1e40af",
+      fontSize: "13px",
+      fontWeight: "bold",
+    }}
+  >
+    {item.is_response_read
+      ? "✓ 사용자 확인"
+      : "🔵 새 응답"}
+  </div>
+)}
 
             {item.is_prayed && (
               <p style={{ color: "#15803d", fontWeight: "bold" }}>

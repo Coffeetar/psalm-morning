@@ -23,10 +23,22 @@ type PsalmEditorProps = {
   isPublished: boolean;
   setIsPublished: (value: boolean) => void;
 
+  reflectionStyle: string;
+  setReflectionStyle: (value: string) => void;
+
   saveTodayPsalm: () => void;
   moveSelectedDate: (days: number) => void;
+  generateAiDraft: () => void;
 
-  adminMessage: string;
+aiVersion: number;
+
+isAiLocked: boolean;
+
+setIsAiLocked: (
+  value: boolean
+) => void;
+
+adminMessage: string;
 };
 
 export default function PsalmEditor({
@@ -45,16 +57,21 @@ export default function PsalmEditor({
   setImageFile,
   isPublished,
   setIsPublished,
+  reflectionStyle,
+  setReflectionStyle,
   saveTodayPsalm,
   moveSelectedDate,
-  adminMessage,
+  generateAiDraft,
+aiVersion,
+
+isAiLocked,
+setIsAiLocked,
+
+adminMessage,
 }: PsalmEditorProps) {
-    <input
-  type="date"
-  value={selectedDate}
-  onChange={(e) => setSelectedDate(e.target.value)}
-/>
+  
   return (
+    
     
     <section
       style={{
@@ -243,7 +260,83 @@ export default function PsalmEditor({
         />{" "}
         공개하기
       </label>
+      <select
+  value={reflectionStyle}
+  onChange={(e) =>
+    setReflectionStyle(
+      e.target.value
+    )
+  }
+  style={{
+    width: "100%",
+    padding: "12px",
+    marginTop: "12px",
+    borderRadius: "12px",
+  }}
+>
+  <option value="general">
+    일반 묵상
+  </option>
 
+  <option value="hope">
+    희망
+  </option>
+
+  <option value="suffering">
+    고난
+  </option>
+
+  <option value="gratitude">
+    감사
+  </option>
+
+  <option value="youth">
+    청년
+  </option>
+</select>
+<button
+  type="button"
+  onClick={() => setIsAiLocked(!isAiLocked)}
+  style={{
+    marginTop: "14px",
+    marginRight: "10px",
+    padding: "14px 20px",
+    borderRadius: "12px",
+    border: "none",
+    background: isAiLocked ? "#92400e" : "#64748b",
+    color: "white",
+    fontSize: "15px",
+    cursor: "pointer",
+  }}
+>
+  {isAiLocked ? "잠금 해제" : "AI 잠금"}
+</button>
+<button
+  type="button"
+  onClick={generateAiDraft}
+  style={{
+    marginTop: "14px",
+    marginRight: "10px",
+    padding: "14px 20px",
+    borderRadius: "12px",
+    border: "none",
+    background: "#7c3aed",
+    color: "white",
+    fontSize: "15px",
+    cursor: "pointer",
+  }}
+>
+  AI 초안 생성
+</button>
+<p
+  style={{
+    marginTop: "8px",
+    fontSize: "13px",
+    color: "#666",
+  }}
+>
+  AI draft version: {aiVersion}
+</p>
       <button
         type="button"
         onClick={saveTodayPsalm}
