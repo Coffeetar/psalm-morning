@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import PwaRegister from "@/components/PwaRegister";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,6 +19,19 @@ export const metadata: Metadata = {
     template: "%s | Psalm Morning",
   },
   description: "매일 아침 시편 말씀과 묵상, 기도로 하루를 시작하세요.",
+  applicationName: "Psalm Morning",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Psalm Morning",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#facc15",
 };
 
 export default function RootLayout({
@@ -30,7 +44,10 @@ export default function RootLayout({
       lang="ko"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <PwaRegister />
+      </body>
     </html>
   );
 }
