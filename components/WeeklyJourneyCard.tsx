@@ -37,7 +37,7 @@ export default function WeeklyJourneyCard({
     ...cardStyle,
     marginTop: "28px",
     background:
-      "linear-gradient(to bottom right, #fffbeb, #ecfccb)",
+      "linear-gradient(145deg, #fffaf0, #eee4f5)",
   }}
 >
       <p
@@ -45,7 +45,7 @@ export default function WeeklyJourneyCard({
           fontSize: "13px",
           letterSpacing: "2px",
           textTransform: "uppercase",
-          color: "#78716c",
+          color: "#7b42a0",
           margin: 0,
         }}
       >
@@ -94,13 +94,13 @@ export default function WeeklyJourneyCard({
             padding: "18px",
             borderRadius: "20px",
             background: "rgba(255,255,255,0.8)",
-            border: "1px solid #fdba74",
+            border: "1px solid rgba(95,40,134,0.24)",
           }}
         >
           <p
             style={{
               margin: 0,
-              color: "#9a3412",
+              color: "#5f2886",
               fontWeight: "bold",
               fontSize: "14px",
             }}
@@ -141,7 +141,8 @@ export default function WeeklyJourneyCard({
                 marginTop: "8px",
                 padding: "12px 14px",
                 borderRadius: "16px",
-                background: isToday ? "#fde68a" : "rgba(255,255,255,0.6)",
+                background: isToday ? "#dcc7e9" : "rgba(255,255,255,0.68)",
+                color: isToday ? "#3f1d57" : "#554d59",
                 display: "flex",
                 justifyContent: "space-between",
                 gap: "12px",

@@ -1,8 +1,9 @@
 export const cardStyle = {
-  background: "rgba(255,255,255,0.82)",
+  background: "rgba(255,253,248,0.9)",
   borderRadius: "24px",
   padding: "24px",
-  boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
+  border: "1px solid rgba(95,40,134,0.12)",
+  boxShadow: "0 12px 34px rgba(63,35,76,0.07)",
 };
 
 export const sectionTitleStyle = {
@@ -13,8 +14,8 @@ export const sectionTitleStyle = {
 };
 
 export const bodyTextStyle = {
-  lineHeight: 1.8,
-  color: "#57534e",
+  lineHeight: 1.85,
+  color: "#554d59",
 };
 
 export const primaryButtonStyle = {
@@ -22,7 +23,7 @@ export const primaryButtonStyle = {
   padding: "15px",
   borderRadius: "18px",
   border: "none",
-  background: "#2563eb",
+  background: "#5f2886",
   color: "white",
   cursor: "pointer",
   fontSize: "16px",
@@ -34,7 +35,7 @@ export const secondaryButtonStyle = {
   padding: "15px",
   borderRadius: "18px",
   border: "none",
-  background: "#b45309",
+  background: "#7b42a0",
   color: "white",
   cursor: "pointer",
   fontSize: "16px",

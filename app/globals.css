@@ -1,8 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8f5fa;
+  --foreground: #2b2430;
+  --otn-purple: #5f2886;
+  --otn-purple-deep: #45205f;
+  --otn-purple-soft: #efe7f5;
+  --otn-lavender: #d8c5e6;
+  --otn-cream: #fffdf8;
+  --otn-muted: #756c7b;
+  --otn-border: rgba(95, 40, 134, 0.12);
 }
 
 @theme inline {
@@ -12,18 +19,13 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), "Apple SD Gothic Neo", "Noto Sans KR",
+    sans-serif;
   margin: 0;
+  text-rendering: optimizeLegibility;
 }
 
 * {
@@ -34,7 +36,7 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-  outline: 3px solid #2563eb;
+  outline: 3px solid rgba(95, 40, 134, 0.4);
   outline-offset: 3px;
 }
 
@@ -53,14 +55,63 @@ button:disabled {
   margin: 0 auto;
 }
 
+::selection {
+  background: #dac6e8;
+  color: #321746;
+}
+
+.home-main,
+.page-main {
+  background:
+    radial-gradient(circle at 15% 8%, rgba(216, 197, 230, 0.58), transparent 32%),
+    radial-gradient(circle at 90% 18%, rgba(255, 240, 205, 0.52), transparent 28%),
+    linear-gradient(145deg, #f7f1fa 0%, #fffaf2 50%, #f2edf7 100%);
+}
+
+.home-shell {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(20px);
+}
+
+.home-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 7px;
+  background: linear-gradient(90deg, #45205f, #7b42a0 55%, #cbb1dd);
+}
+
+.pm-share-button {
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.pm-share-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(95, 40, 134, 0.22);
+}
+
+.pm-card {
+  border: 1px solid var(--otn-border);
+}
+
+.pm-nav-link {
+  transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.pm-nav-link:hover {
+  transform: translateY(-1px);
+}
+
 @media (max-width: 640px) {
   .home-main {
     padding: 16px 12px 28px !important;
   }
 
   .home-shell {
-    padding: 18px !important;
-    border-radius: 24px !important;
+    padding: 22px 18px !important;
+    border-radius: 26px !important;
   }
 
   .home-state {

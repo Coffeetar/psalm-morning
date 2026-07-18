@@ -14,16 +14,18 @@ export default function BottomNav() {
         marginTop: "40px",
         padding: "14px",
         borderRadius: "999px",
-        background: "rgba(255,255,255,0.9)",
+        background: "rgba(255,253,248,0.94)",
         display: "flex",
         justifyContent: "center",
         flexWrap: "wrap",
         gap: "12px",
         boxShadow:
-          "0 8px 24px rgba(0,0,0,0.08)",
+          "0 12px 30px rgba(63,35,76,0.1)",
+        border: "1px solid rgba(95,40,134,0.1)",
       }}
     >
       <Link
+        className="pm-nav-link"
         href="/"
         aria-current={pathname === "/" ? "page" : undefined}
         style={{
@@ -32,8 +34,8 @@ export default function BottomNav() {
           borderRadius: "999px",
           background:
             pathname === "/"
-              ? "#2563eb"
-              : "#dbeafe",
+              ? "#5f2886"
+              : "#f0e8f5",
 
           color:
             pathname === "/"
@@ -45,6 +47,7 @@ export default function BottomNav() {
       </Link>
 
       <Link
+        className="pm-nav-link"
         href="/archive"
         aria-current={pathname.startsWith("/archive") ? "page" : undefined}
         style={{
@@ -53,8 +56,8 @@ export default function BottomNav() {
           borderRadius: "999px",
 background:
 pathname.startsWith("/archive")
-? "#2563eb"
-: "#c7d2fe",
+? "#5f2886"
+: "#f0e8f5",
 
 color:
 pathname.startsWith("/archive")
@@ -66,6 +69,7 @@ pathname.startsWith("/archive")
       </Link>
 
       <Link
+        className="pm-nav-link"
         href="/my-prayers"
         aria-current={pathname === "/my-prayers" ? "page" : undefined}
         style={{
@@ -74,8 +78,8 @@ pathname.startsWith("/archive")
           borderRadius: "999px",
 background:
 pathname === "/my-prayers"
-? "#16a34a"
-: "#dcfce7",
+? "#5f2886"
+: "#f0e8f5",
 
 color:
 pathname === "/my-prayers"
@@ -87,6 +91,7 @@ pathname === "/my-prayers"
         내 기도
       </Link>
       <Link
+  className="pm-nav-link"
   href="/news"
   aria-current={pathname === "/news" ? "page" : undefined}
   style={{
@@ -95,8 +100,8 @@ pathname === "/my-prayers"
     borderRadius: "999px",
     background:
       pathname === "/news"
-        ? "#7c3aed"
-        : "#ede9fe",
+        ? "#5f2886"
+        : "#f0e8f5",
     color:
       pathname === "/news"
         ? "white"

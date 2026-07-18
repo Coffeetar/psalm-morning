@@ -20,15 +20,17 @@ export default function HomeHeader() {
     <header
       style={{
         textAlign: "center",
-        marginBottom: "28px",
+        marginBottom: "32px",
+        paddingTop: "12px",
       }}
     >
       <p
         style={{
           fontSize: "14px",
-          color: "#78716c",
-          letterSpacing: "2px",
+          color: "#5f2886",
+          letterSpacing: "3px",
           textTransform: "uppercase",
+          fontWeight: 750,
         }}
       >
         {season} Psalm Morning
@@ -37,7 +39,8 @@ export default function HomeHeader() {
       <p
         style={{
           marginTop: "8px",
-          color: "#57534e",
+          color: "#756c7b",
+          fontSize: "15px",
         }}
       >
         {dateText}
@@ -47,8 +50,9 @@ export default function HomeHeader() {
         style={{
           marginTop: "18px",
           lineHeight: 1.7,
-          color: "#57534e",
-          fontStyle: "italic",
+          color: "#554d59",
+          fontFamily: "Georgia, 'Times New Roman', serif",
+          fontSize: "17px",
         }}
       >
         잠시 멈추어 마음을 가다듬어 보세요.

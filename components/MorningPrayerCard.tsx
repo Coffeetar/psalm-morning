@@ -10,7 +10,7 @@ export default function MorningPrayerCard({
   prayer,
 }: MorningPrayerCardProps) {
   return (
-<Card background="#f0f9ff">
+<Card background="linear-gradient(145deg, #f3edf8, #fffdf8)">
 <SectionTitle>
   아침 기도
 </SectionTitle>

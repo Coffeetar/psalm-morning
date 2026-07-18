@@ -17,6 +17,8 @@ export default function PsalmTextCard({
           textAlign: "center",
           fontSize: "30px",
           marginBottom: "24px",
+          color: "#3f1d57",
+          letterSpacing: "-0.03em",
         }}
       >
         {psalmReference}
@@ -29,11 +31,21 @@ export default function PsalmTextCard({
           lineHeight: 1.9,
           fontSize: "18px",
           whiteSpace: "pre-line",
+          background:
+            "linear-gradient(145deg, rgba(255,253,248,0.98), rgba(247,241,250,0.95))",
         }}
       >
         <SectionTitle>오늘의 말씀</SectionTitle>
 
-        <p style={{ margin: "18px 0 0" }}>“{psalmText || ""}”</p>
+        <p
+          style={{
+            margin: "18px 0 0",
+            color: "#3f3743",
+            fontFamily: "Georgia, 'Times New Roman', serif",
+          }}
+        >
+          “{psalmText || ""}”
+        </p>
       </div>
     </>
   );

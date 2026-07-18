@@ -15,9 +15,10 @@ export default function PsalmImageCard({
     <div
       style={{
         marginBottom: "28px",
-        borderRadius: "36px",
+        borderRadius: "28px",
         overflow: "hidden",
-        boxShadow: "0 8px 24px rgba(0,0,0,0.10)",
+        border: "1px solid rgba(95,40,134,0.13)",
+        boxShadow: "0 16px 36px rgba(63,35,76,0.12)",
       }}
     >
       <Image

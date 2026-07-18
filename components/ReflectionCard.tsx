@@ -10,7 +10,7 @@ export default function ReflectionCard({
   reflection,
 }: ReflectionCardProps) {
   return (
-<Card background="#fefce8">
+<Card background="linear-gradient(145deg, #fffaf0, #f8f2fb)">
 <SectionTitle>
   오늘의 묵상
 </SectionTitle>

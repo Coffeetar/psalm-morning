@@ -150,14 +150,14 @@ function saveReflectionMemo() {
           alignItems: "center",
           padding: "40px",
           fontFamily: "sans-serif",
-          background:
-            "linear-gradient(to bottom right, #fef3c7, #ecfccb, #e0f2fe)",
+          background: "#f8f5fa",
         }}
       >
         <div
           style={{
             maxWidth: "520px",
-            background: "rgba(255,255,255,0.8)",
+            background: "rgba(255,253,248,0.92)",
+            border: "1px solid rgba(95,40,134,0.12)",
             borderRadius: "28px",
             padding: "32px",
             textAlign: "center",
@@ -191,7 +191,7 @@ function saveReflectionMemo() {
                 padding: "12px 18px",
                 border: 0,
                 borderRadius: "14px",
-                background: "#292524",
+                background: "#5f2886",
                 color: "white",
                 cursor: "pointer",
               }}
@@ -209,11 +209,8 @@ function saveReflectionMemo() {
       className="home-main"
       style={{
         minHeight: "100vh",
-        background:
-          "linear-gradient(to bottom right, #fef3c7, #ecfccb, #e0f2fe)",
         padding: "40px",
-        fontFamily: "sans-serif",
-        color: "#292524",
+        color: "#2b2430",
       }}
     >
       <div
@@ -221,10 +218,10 @@ function saveReflectionMemo() {
         style={{
           maxWidth: "600px",
           margin: "0 auto",
-          background: "rgba(255,255,255,0.75)",
-          borderRadius: "32px",
-          padding: "32px",
-          boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
+          background: "rgba(255,255,255,0.7)",
+          borderRadius: "34px",
+          padding: "34px",
+          boxShadow: "0 24px 70px rgba(63,35,76,0.13)",
         }}
       >
 <HomeHeader />
@@ -263,6 +260,7 @@ function saveReflectionMemo() {
 />
 
         <button
+          className="pm-share-button"
           onClick={async () => {
             const text = `
 ${todayPsalm?.psalm_reference}
@@ -287,10 +285,12 @@ ${todayPsalm?.reflection || ""}
             padding: "14px",
             borderRadius: "16px",
             border: "none",
-            background: "#2563eb",
+            background: "linear-gradient(135deg, #5f2886, #7b42a0)",
             color: "white",
             cursor: "pointer",
             fontSize: "15px",
+            fontWeight: 700,
+            letterSpacing: "0.01em",
           }}
         >
           오늘의 시편 공유하기

@@ -17,12 +17,12 @@ export default function Button({
 }: ButtonProps) {
   const background =
     variant === "primary"
-      ? "#2563eb"
+      ? "#5f2886"
       : variant === "secondary"
-      ? "#b45309"
+      ? "#7b42a0"
       : variant === "danger"
       ? "#b91c1c"
-      : "#292524";
+      : "#45205f";
 
   return (
     <button
@@ -32,7 +32,7 @@ export default function Button({
       style={{
         width: fullWidth ? "100%" : "auto",
         padding: "14px 20px",
-        borderRadius: "16px",
+        borderRadius: "14px",
         border: "none",
         background,
         color: "white",
@@ -40,6 +40,10 @@ export default function Button({
         opacity: disabled ? 0.65 : 1,
         fontSize: "15px",
         fontWeight: "bold",
+        boxShadow:
+          variant === "danger"
+            ? "none"
+            : "0 8px 18px rgba(95,40,134,0.16)",
       }}
     >
       {children}

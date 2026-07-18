@@ -12,7 +12,8 @@ export default function SectionTitle({
         marginBottom: "14px",
         fontSize: "22px",
         fontWeight: 700,
-        color: "#292524",
+        color: "#3f1d57",
+        letterSpacing: "-0.02em",
       }}
     >
       {children}

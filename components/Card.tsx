@@ -13,6 +13,7 @@ export default function Card({
 }: CardProps) {
   return (
     <section
+      className="pm-card"
       style={{
         ...cardStyle,
         marginTop,
