@@ -10,13 +10,19 @@ import AdminDashboard from "@/components/AdminDashboard";
 import {
   supabase,
 } from "@/lib/supabaseClient";
-import type { Announcement, DailyPsalm, PrayerRequest } from "@/lib/types";
+import type {
+  Announcement,
+  DailyPsalm,
+  PrayerRequest,
+  WeeklyJourney,
+} from "@/lib/types";
 
 
 export default function AdminPage() {
     
   const [prayerList, setPrayerList] = useState<PrayerRequest[]>([]);
   const [announcementList, setAnnouncementList] = useState<Announcement[]>([]);
+  const [weeklyJourneyList, setWeeklyJourneyList] = useState<WeeklyJourney[]>([]);
   const [editingAnnouncementId, setEditingAnnouncementId] = useState<
     string | null
   >(null);
@@ -151,10 +157,6 @@ if (error) {
 }
 
 async function saveWeeklyJourney() {
-    setAdminMessage("saveWeeklyJourney 함수가 실행되었습니다.");
-    setAdminMessage(
-  `저장 직전 안내문: ${journeyIntroduction || "비어 있음"}`
-);
   const rows = [
     { weekday: "Monday", psalm_reference: mondayPsalm },
     { weekday: "Tuesday", psalm_reference: tuesdayPsalm },
@@ -193,10 +195,9 @@ if (deleteError) {
 
   return;
 }
-const { data, error } = await supabase
+const { error } = await supabase
   .from("weekly_psalm_journey")
-  .insert(rows)
-  .select("weekday, psalm_reference, theme, introduction");
+  .insert(rows);
 
   if (error) {
 console.error(
@@ -211,18 +212,11 @@ console.error(
     return;
   }
 setAdminMessage(
-  `주간 시편 여정 저장 완료: ${JSON.stringify(data)}`
+  weeklyJourneyList.length > 0
+    ? "주간 시편 여정이 수정되었습니다."
+    : "주간 시편 여정이 저장되었습니다."
 );
-  setJourneyTheme("");
-setJourneyThemeImage("");
-setJourneyIntroduction("");
-setMondayPsalm("");
-setTuesdayPsalm("");
-setWednesdayPsalm("");
-setThursdayPsalm("");
-setFridayPsalm("");
-setSaturdayPsalm("");
-setSundayPsalm("");
+  await loadWeeklyJourney();
 }
 async function saveAnnouncement() {
   if (!announcementTitle.trim() || !announcementContent.trim()) {
@@ -340,6 +334,35 @@ if (error) {
     setAnnouncementList((data || []) as Announcement[]);
   }, []);
 
+  const loadWeeklyJourney = useCallback(async () => {
+    const { data, error } = await supabase
+      .from("weekly_psalm_journey")
+      .select("*")
+      .eq("is_published", true);
+
+    if (error) {
+      console.error(error);
+      setAdminMessage("주간 시편 여정을 불러오는 중 문제가 발생했습니다.");
+      return;
+    }
+
+    const rows = (data || []) as WeeklyJourney[];
+    const byWeekday = new Map(rows.map((item) => [item.weekday, item]));
+    const first = rows[0];
+
+    setWeeklyJourneyList(rows);
+    setJourneyTheme(first?.theme || "");
+    setJourneyThemeImage(first?.theme_image_url || "");
+    setJourneyIntroduction(first?.introduction || "");
+    setMondayPsalm(byWeekday.get("Monday")?.psalm_reference || "");
+    setTuesdayPsalm(byWeekday.get("Tuesday")?.psalm_reference || "");
+    setWednesdayPsalm(byWeekday.get("Wednesday")?.psalm_reference || "");
+    setThursdayPsalm(byWeekday.get("Thursday")?.psalm_reference || "");
+    setFridayPsalm(byWeekday.get("Friday")?.psalm_reference || "");
+    setSaturdayPsalm(byWeekday.get("Saturday")?.psalm_reference || "");
+    setSundayPsalm(byWeekday.get("Sunday")?.psalm_reference || "");
+  }, []);
+
   const loadTodayPsalmForAdmin = useCallback(async () => {
     
 const today = selectedDate;
@@ -412,6 +435,7 @@ useEffect(() => {
     setCheckingLogin(false);
     void loadPrayerRequests();
     void loadAnnouncements();
+    void loadWeeklyJourney();
     void loadTodayPsalmForAdmin();
     void loadScheduleList();
   }
@@ -420,6 +444,7 @@ useEffect(() => {
 }, [
   loadPrayerRequests,
   loadAnnouncements,
+  loadWeeklyJourney,
   loadScheduleList,
   loadTodayPsalmForAdmin,
   router,
@@ -539,6 +564,28 @@ function cancelAnnouncementEdit() {
   setAnnouncementContent("");
   setAnnouncementLink("");
   setAdminMessage("공지 수정을 취소했습니다.");
+}
+
+async function deleteWeeklyJourney() {
+  const confirmed = confirm(
+    "현재 등록된 주간 시편 여정 전체를 삭제하시겠습니까?"
+  );
+
+  if (!confirmed) return;
+
+  const { error } = await supabase
+    .from("weekly_psalm_journey")
+    .delete()
+    .eq("is_published", true);
+
+  if (error) {
+    console.error(error);
+    setAdminMessage("주간 시편 여정 삭제 중 문제가 발생했습니다.");
+    return;
+  }
+
+  setAdminMessage("주간 시편 여정이 삭제되었습니다.");
+  await loadWeeklyJourney();
 }
 
 async function generateAiDraft() {
@@ -988,7 +1035,27 @@ imageUrl={imageUrl}
     background: "#fefce8",
   }}
 >
-  <h2>이번 주 시편 여정</h2>
+  <h2>
+    {weeklyJourneyList.length > 0
+      ? "이번 주 시편 여정 수정"
+      : "이번 주 시편 여정 등록"}
+  </h2>
+
+  {weeklyJourneyList.length > 0 && (
+    <div
+      role="status"
+      style={{
+        marginTop: "10px",
+        padding: "14px",
+        borderRadius: "12px",
+        background: "#fef3c7",
+        color: "#854d0e",
+      }}
+    >
+      현재 공개 중인 주간 여정 {weeklyJourneyList.length}일분을 불러왔습니다.
+      내용을 변경한 뒤 저장하면 기존 여정이 수정됩니다.
+    </div>
+  )}
 
   <input
     value={journeyTheme}
@@ -1122,8 +1189,30 @@ imageUrl={imageUrl}
       fontWeight: "bold",
     }}
   >
-    주간 여정 저장
+    {weeklyJourneyList.length > 0
+      ? "주간 여정 변경 저장"
+      : "주간 여정 저장"}
   </button>
+
+  {weeklyJourneyList.length > 0 && (
+    <button
+      type="button"
+      onClick={() => void deleteWeeklyJourney()}
+      style={{
+        marginTop: "16px",
+        marginLeft: "8px",
+        padding: "12px 18px",
+        borderRadius: "12px",
+        border: "none",
+        background: "#dc2626",
+        color: "white",
+        cursor: "pointer",
+        fontWeight: "bold",
+      }}
+    >
+      주간 여정 전체 삭제
+    </button>
+  )}
 </section>
      <PsalmScheduleList
   scheduleList={scheduleList}
