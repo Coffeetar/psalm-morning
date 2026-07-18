@@ -9,6 +9,7 @@ type ReflectionMemoCardProps = {
   saveReflection: () => void;
   copyReflection: () => void;
   isSaved: boolean;
+  statusMessage: string;
 };
 
 export default function ReflectionMemoCard({
@@ -17,6 +18,7 @@ export default function ReflectionMemoCard({
   saveReflection,
   copyReflection,
   isSaved,
+  statusMessage,
 }: ReflectionMemoCardProps) {
   return (
     <section
@@ -59,6 +61,23 @@ export default function ReflectionMemoCard({
     묵상 복사
   </Button>
 </div>
+      {statusMessage && (
+        <p
+          role="status"
+          aria-live="polite"
+          style={{
+            margin: "12px 0 0",
+            padding: "10px 12px",
+            borderRadius: "12px",
+            background: "#f0e8f5",
+            color: "#5f2886",
+            fontSize: "14px",
+            fontWeight: 650,
+          }}
+        >
+          {statusMessage}
+        </p>
+      )}
       <p
         style={{
           margin: "12px 0 0",

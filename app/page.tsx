@@ -22,6 +22,7 @@ import {
 
 export default function HomePage() {
   const [reflection, setReflection] = useState("");
+  const [reflectionMessage, setReflectionMessage] = useState("");
   const [hasSavedReflection, setHasSavedReflection] =
   useState(false);
   const [prayerRequest, setPrayerRequest] = useState("");
@@ -89,7 +90,7 @@ function saveReflectionMemo() {
   const trimmedReflection = reflection.trim();
 
   if (!trimmedReflection) {
-    setMessage("묵상을 먼저 입력해주세요.");
+    setReflectionMessage("묵상을 먼저 입력해주세요.");
     return;
   }
 
@@ -98,7 +99,7 @@ function saveReflectionMemo() {
     trimmedReflection
   );
   setReflection(trimmedReflection);
-  setMessage("묵상이 저장되었습니다.");
+  setReflectionMessage("묵상이 이 기기에 저장되었습니다.");
   setHasSavedReflection(true);
 }
   async function handlePrayerSubmit() {
@@ -313,26 +314,45 @@ ${todayPsalm?.reflection || ""}`;
   setReflection={(value) => {
     setReflection(value);
     setHasSavedReflection(false);
+    setReflectionMessage("");
   }}
   saveReflection={saveReflectionMemo}
   copyReflection={async () => {
     const trimmedReflection = reflection.trim();
 
     if (!trimmedReflection) {
-      setMessage("복사할 묵상을 먼저 입력해주세요.");
+      setReflectionMessage("복사할 묵상을 먼저 입력해주세요.");
       return;
     }
 
+    const textToCopy =
+      `Psalm Morning · ${todayPsalm?.psalm_reference}\n\n${trimmedReflection}`;
+
     try {
-      await navigator.clipboard.writeText(
-        `Psalm Morning · ${todayPsalm?.psalm_reference}\n\n${trimmedReflection}`
-      );
-      setMessage("묵상이 클립보드에 복사되었습니다.");
+      await navigator.clipboard.writeText(textToCopy);
+      setReflectionMessage("묵상이 복사되었습니다.");
     } catch {
-      setMessage("묵상을 길게 눌러 직접 복사해주세요.");
+      const temporaryTextArea = document.createElement("textarea");
+      temporaryTextArea.value = textToCopy;
+      temporaryTextArea.setAttribute("readonly", "");
+      temporaryTextArea.style.position = "fixed";
+      temporaryTextArea.style.opacity = "0";
+      document.body.appendChild(temporaryTextArea);
+      temporaryTextArea.select();
+      temporaryTextArea.setSelectionRange(0, temporaryTextArea.value.length);
+
+      const didCopy = document.execCommand("copy");
+      document.body.removeChild(temporaryTextArea);
+
+      setReflectionMessage(
+        didCopy
+          ? "묵상이 복사되었습니다."
+          : "복사하지 못했습니다. 묵상 내용을 길게 눌러 복사해주세요."
+      );
     }
   }}
   isSaved={hasSavedReflection}
+  statusMessage={reflectionMessage}
 />
 
 <PrayerRequestCard
