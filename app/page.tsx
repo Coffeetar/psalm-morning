@@ -315,6 +315,23 @@ ${todayPsalm?.reflection || ""}`;
     setHasSavedReflection(false);
   }}
   saveReflection={saveReflectionMemo}
+  copyReflection={async () => {
+    const trimmedReflection = reflection.trim();
+
+    if (!trimmedReflection) {
+      setMessage("복사할 묵상을 먼저 입력해주세요.");
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(
+        `Psalm Morning · ${todayPsalm?.psalm_reference}\n\n${trimmedReflection}`
+      );
+      setMessage("묵상이 클립보드에 복사되었습니다.");
+    } catch {
+      setMessage("묵상을 길게 눌러 직접 복사해주세요.");
+    }
+  }}
   isSaved={hasSavedReflection}
 />
 

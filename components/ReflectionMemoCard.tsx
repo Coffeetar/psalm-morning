@@ -7,6 +7,7 @@ type ReflectionMemoCardProps = {
   reflection: string;
   setReflection: (value: string) => void;
   saveReflection: () => void;
+  copyReflection: () => void;
   isSaved: boolean;
 };
 
@@ -14,6 +15,7 @@ export default function ReflectionMemoCard({
   reflection,
   setReflection,
   saveReflection,
+  copyReflection,
   isSaved,
 }: ReflectionMemoCardProps) {
   return (
@@ -34,13 +36,29 @@ export default function ReflectionMemoCard({
   minHeight="100px"
 />
 
-<Button
-  onClick={saveReflection}
-  variant="secondary"
-  fullWidth
+<div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)",
+    gap: "10px",
+  }}
 >
-  {isSaved ? "묵상 저장됨 · 다시 저장하기" : "묵상 저장하기"}
-</Button>
+  <Button
+    onClick={saveReflection}
+    variant="secondary"
+    fullWidth
+  >
+    {isSaved ? "묵상 다시 저장" : "묵상 저장"}
+  </Button>
+
+  <Button
+    onClick={copyReflection}
+    variant="primary"
+    fullWidth
+  >
+    묵상 복사
+  </Button>
+</div>
       <p
         style={{
           margin: "12px 0 0",
