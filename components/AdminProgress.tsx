@@ -24,7 +24,7 @@ const items = [
   },
 ];
 
-  const completed = items.filter(Boolean).length;
+  const completed = items.filter((item) => item.done).length;
 
   const percent =
     (completed / items.length) * 100;
@@ -55,7 +55,7 @@ const items = [
             width: `${percent}%`,
             height: "100%",
             borderRadius: "999px",
-            background: "#22c55e",
+            background: "linear-gradient(90deg, #5f2886, #9b6fba)",
           }}
         />
       </div>

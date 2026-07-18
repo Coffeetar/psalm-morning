@@ -26,7 +26,7 @@ export default function AdminDashboard({
   return (
 <Card
   marginTop="24px"
-  background="linear-gradient(to bottom right, #fef3c7, #ecfccb)"
+  background="linear-gradient(145deg, #f3edf8, #fffaf0)"
 >
       <p
         style={{
@@ -45,6 +45,7 @@ export default function AdminDashboard({
       </h2>
 
       <div
+        className="admin-grid"
         style={{
           display: "grid",
           
@@ -54,6 +55,7 @@ export default function AdminDashboard({
         }}
       >
         <div
+  className="admin-stat-card"
   style={{
     marginTop: "24px",
     padding: "18px",
@@ -75,27 +77,28 @@ export default function AdminDashboard({
     ☑ Admin 접속
   </p>
 </div>
-        <div style={dashboardCardStyle}>
+        <div className="admin-stat-card" style={dashboardCardStyle}>
           <strong>선택 날짜</strong>
           <p>{selectedDate}</p>
         </div>
 
-        <div style={dashboardCardStyle}>
+        <div className="admin-stat-card" style={dashboardCardStyle}>
           <strong>오늘의 시편</strong>
           <p>{psalmReference || "미등록"}</p>
         </div>
 
-        <div style={dashboardCardStyle}>
+        <div className="admin-stat-card" style={dashboardCardStyle}>
           <strong>공개 상태</strong>
           <p>{isPublished ? "공개 중" : "비공개"}</p>
         </div>
 
-        <div style={dashboardCardStyle}>
+        <div className="admin-stat-card" style={dashboardCardStyle}>
           <strong>미기도</strong>
           <p>{pendingPrayerCount}건</p>
         </div>
       </div>
       <div
+  className="admin-quick-actions admin-grid"
   style={{
     marginTop: "24px",
     display: "grid",
@@ -110,7 +113,7 @@ export default function AdminDashboard({
       padding: "14px",
       borderRadius: "16px",
       border: "none",
-      background: "#7c3aed",
+      background: "#5f2886",
       color: "white",
       cursor: "pointer",
       fontWeight: "bold",

@@ -78,13 +78,14 @@ adminMessage,
     
     
     <section
+      className="admin-panel"
       style={{
         marginTop: "30px",
         marginBottom: "40px",
         padding: "24px",
         border: "1px solid #ddd",
         borderRadius: "20px",
-        background: "#fffaf0",
+        background: "#fffdf8",
       }}
     >
       <h2>{isEditing ? "오늘의 시편 수정" : "오늘의 시편 등록"}</h2>
@@ -343,7 +344,7 @@ adminMessage,
     padding: "14px 20px",
     borderRadius: "12px",
     border: "none",
-    background: "#7c3aed",
+    background: "#5f2886",
     color: "white",
     fontSize: "15px",
     cursor: "pointer",
@@ -368,7 +369,7 @@ adminMessage,
           padding: "14px 20px",
           borderRadius: "12px",
           border: "none",
-          background: "#292524",
+          background: "#45205f",
           color: "white",
           fontSize: "15px",
           cursor: "pointer",

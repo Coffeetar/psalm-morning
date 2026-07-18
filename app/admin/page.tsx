@@ -670,7 +670,7 @@ setAdminMessage(
 }
 if (checkingLogin) {
   return (
-    <main style={{ padding: "40px", fontFamily: "sans-serif" }}>
+    <main className="admin-main">
       <p>관리자 로그인 상태를 확인하는 중입니다...</p>
     </main>
   );
@@ -780,7 +780,7 @@ function getDayLabel(dateString: string) {
 
   return (
     
-    <main style={{ padding: "40px", fontFamily: "sans-serif" }}>
+    <main className="admin-main">
       <h1>Psalm Morning Admin</h1>
 <AdminDashboard
 imageUrl={imageUrl}
@@ -805,6 +805,7 @@ imageUrl={imageUrl}
   로그아웃
 </button>
 <section
+  className="admin-panel"
   id="announcement-section"
   style={{
     marginTop: "30px",
@@ -1025,6 +1026,7 @@ imageUrl={imageUrl}
   </div>
 </section>
 <section
+  className="admin-panel"
   id="weekly-journey-section"
   style={{
     marginTop: "30px",
@@ -1260,7 +1262,7 @@ setIsAiLocked={
 }
   adminMessage={adminMessage}
 />
-<p>
+<p className="admin-section-label">
 제출된 기도 제목 목록입니다.
 </p>
 <input
@@ -1277,6 +1279,7 @@ setIsAiLocked={
 />
 
 <div
+  className="admin-grid"
   style={{
     display: "grid",
     gridTemplateColumns: "repeat(2, 1fr)",
@@ -1287,6 +1290,7 @@ setIsAiLocked={
 >
 
 <div
+className="admin-stat-card"
 style={{
 padding:"16px",
 borderRadius:"16px",
@@ -1298,6 +1302,7 @@ background:"#dbeafe",
 </div>
 
 <div
+className="admin-stat-card"
 style={{
 padding:"16px",
 borderRadius:"16px",
@@ -1315,6 +1320,7 @@ prayerList.filter(
 </div>
 
 <div
+className="admin-stat-card"
 style={{
 padding:"16px",
 borderRadius:"16px",
@@ -1332,6 +1338,7 @@ prayerList.filter(
 </div>
 
 <div
+className="admin-stat-card"
 style={{
 padding:"16px",
 borderRadius:"16px",

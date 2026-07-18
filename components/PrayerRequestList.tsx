@@ -28,6 +28,7 @@ export default function PrayerRequestList({
         prayerList.map((item) => (
           
           <div
+            className="admin-panel"
             key={item.id}
             style={{
               marginTop: "16px",

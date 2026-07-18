@@ -152,6 +152,83 @@ button:disabled {
   box-shadow: 0 0 0 4px rgba(95, 40, 134, 0.08);
 }
 
+.admin-main {
+  min-height: 100vh;
+  padding: 36px 28px 64px !important;
+  background:
+    radial-gradient(circle at 8% 4%, rgba(216, 197, 230, 0.5), transparent 28%),
+    linear-gradient(145deg, #f7f2fa, #fffaf2);
+  color: #2b2430;
+}
+
+.admin-main > * {
+  width: 100%;
+  max-width: 1080px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.admin-main > h1 {
+  color: var(--otn-purple-deep);
+  letter-spacing: -0.035em;
+}
+
+.admin-panel {
+  background: rgba(255, 253, 248, 0.93) !important;
+  border: 1px solid rgba(95, 40, 134, 0.12) !important;
+  box-shadow: 0 12px 32px rgba(63, 35, 76, 0.07);
+}
+
+.admin-panel h2,
+.admin-panel h3 {
+  color: var(--otn-purple-deep);
+}
+
+.admin-main input:not([type="checkbox"]):not([type="file"]),
+.admin-main textarea,
+.admin-main select {
+  border: 1px solid rgba(95, 40, 134, 0.18) !important;
+  border-radius: 12px;
+  background: #fff !important;
+  color: #2b2430;
+}
+
+.admin-main input:focus,
+.admin-main textarea:focus,
+.admin-main select:focus {
+  border-color: rgba(95, 40, 134, 0.55) !important;
+  box-shadow: 0 0 0 4px rgba(95, 40, 134, 0.08);
+  outline: none;
+}
+
+.admin-quick-actions button {
+  min-height: 46px;
+  border: 1px solid rgba(95, 40, 134, 0.14);
+  border-radius: 14px;
+  background: #f3edf8;
+  color: #45205f;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.admin-quick-actions button:first-child {
+  border: 0;
+  background: #5f2886;
+  color: white;
+}
+
+.admin-stat-card {
+  border: 1px solid rgba(95, 40, 134, 0.1);
+  background: rgba(255, 255, 255, 0.78) !important;
+}
+
+.admin-section-label {
+  margin: 34px auto 10px !important;
+  color: var(--otn-purple-deep);
+  font-size: 20px;
+  font-weight: 750;
+}
+
 @media (max-width: 640px) {
   .home-main {
     padding: 16px 12px 28px !important;
@@ -173,5 +250,18 @@ button:disabled {
   .pm-page-shell {
     padding: 24px 18px;
     border-radius: 26px;
+  }
+
+  .admin-main {
+    padding: 22px 14px 48px !important;
+  }
+
+  .admin-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .admin-panel {
+    padding: 20px 16px !important;
+    border-radius: 18px !important;
   }
 }

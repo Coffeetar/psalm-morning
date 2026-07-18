@@ -57,11 +57,12 @@ export default function PsalmScheduleList({
   return (
     
     <section
+      className="admin-panel"
       style={{
         marginTop: "40px",
         padding: "24px",
         borderRadius: "20px",
-        background: "#f8fafc",
+        background: "#fffdf8",
       }}
     >
       <h2>등록된 시편 일정</h2>
@@ -78,7 +79,7 @@ export default function PsalmScheduleList({
     padding: "8px 12px",
     borderRadius: "10px",
     border: "none",
-    background: "#476956",
+    background: "#5f2886",
     color: "white",
     cursor: "pointer",
     fontSize: "13px",
@@ -104,7 +105,7 @@ export default function PsalmScheduleList({
             background:
               selectedDate ===
               item.devotional_date
-                ? "#dcfce7"
+                ? "#eee4f5"
                 : "white",
             cursor: "pointer",
           }}
@@ -178,7 +179,7 @@ export default function PsalmScheduleList({
     marginRight: "10px",
     padding: "8px 12px",
     borderRadius: "10px",
-    background: "#2563eb",
+    background: "#5f2886",
     color: "white",
     textDecoration: "none",
     fontSize: "13px",
@@ -201,7 +202,7 @@ export default function PsalmScheduleList({
       padding: "8px 12px",
       borderRadius: "10px",
       border: "none",
-      background: "#2563eb",
+      background: "#5f2886",
       fontSize: "13px",
       color: "white",
       cursor: "pointer",
