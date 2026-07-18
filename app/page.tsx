@@ -13,6 +13,7 @@ import PrayerSuccessMessage from "@/components/PrayerSuccessMessage";
 import WeeklyJourneyCard
 from "@/components/WeeklyJourneyCard";
 import TodaysJourneyCard from "@/components/TodaysJourneyCard";
+import HomeInstallGuide from "@/components/HomeInstallGuide";
 import { supabase } from "@/lib/supabaseClient";
 import type { DailyPsalm, WeeklyJourney } from "@/lib/types";
 import {
@@ -375,6 +376,7 @@ ${todayPsalm?.reflection || ""}`;
   }}
 />
 
+        <HomeInstallGuide />
         <BottomNav />
       </div>
     </main>
