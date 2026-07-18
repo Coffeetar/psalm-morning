@@ -13,6 +13,7 @@ export default function Input({
 }: InputProps) {
   return (
     <input
+      className="pm-field"
       type={type}
       value={value}
       onChange={(e) => onChange(e.target.value)}
@@ -21,9 +22,10 @@ export default function Input({
         width: "100%",
         padding: "14px",
         borderRadius: "14px",
-        border: "1px solid #d6d3d1",
+        border: "1px solid rgba(95,40,134,0.18)",
         fontSize: "16px",
-        background: "rgba(255,255,255,0.9)",
+        background: "#fffdf8",
+        color: "#2b2430",
       }}
     />
   );

@@ -15,6 +15,7 @@ export default function TextArea({
 }: TextAreaProps) {
   return (
     <textarea
+      className="pm-field"
       value={value}
       onChange={(e) =>
         onChange(e.target.value)
@@ -25,10 +26,12 @@ export default function TextArea({
         minHeight,
         padding: "16px",
         borderRadius: "18px",
-        border: "1px solid #d6d3d1",
+        border: "1px solid rgba(95,40,134,0.18)",
         fontSize: "16px",
         lineHeight: 1.6,
         resize: "vertical",
+        background: "#fffdf8",
+        color: "#2b2430",
       }}
     />
   );
