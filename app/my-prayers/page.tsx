@@ -89,22 +89,15 @@ useEffect(() => {
       className="page-main"
       style={{
         minHeight: "100vh",
-        fontFamily: "sans-serif",
-        background:
-          "linear-gradient(to bottom right, #fef3c7, #ecfccb, #e0f2fe)",
       }}
     >
       <div
-        className="page-shell"
-        style={{
-          background: "rgba(255,255,255,0.8)",
-          borderRadius: "28px",
-          padding: "32px",
-        }}
+        className="page-shell pm-page-shell"
       >
-        <h1>내 기도 요청 확인</h1>
+        <p className="pm-eyebrow">MY PRAYER</p>
+        <h1 className="pm-page-title">내 기도 확인</h1>
 
-        <p>
+        <p className="pm-page-intro">
           기도 제목 제출 시 받은 추적 코드를 입력하세요.
         </p>
 
@@ -116,6 +109,7 @@ useEffect(() => {
         </label>
 
         <input
+          className="pm-field"
           id="prayer-tracking-code"
           value={trackingCode}
           onChange={(e) =>
@@ -129,8 +123,11 @@ useEffect(() => {
             width: "100%",
             padding: "16px",
             borderRadius: "16px",
-            border: "1px solid #ccc",
+            border: "1px solid rgba(95,40,134,0.18)",
             marginTop: "8px",
+            background: "#fffdf8",
+            fontSize: "16px",
+            color: "#2b2430",
           }}
         />
 
@@ -143,10 +140,12 @@ useEffect(() => {
             padding: "14px 20px",
             borderRadius: "14px",
             border: "none",
-            background: "#292524",
+            background: "#5f2886",
             color: "white",
             cursor: isSearching ? "not-allowed" : "pointer",
             opacity: isSearching ? 0.65 : 1,
+            fontWeight: 700,
+            boxShadow: "0 8px 18px rgba(95,40,134,0.16)",
           }}
         >
           {isSearching ? "조회 중..." : "조회"}
@@ -164,7 +163,8 @@ useEffect(() => {
               marginTop: "32px",
               padding: "24px",
               borderRadius: "20px",
-              background: "#fafaf9",
+              background: "linear-gradient(145deg, #fffdf8, #f3edf8)",
+              border: "1px solid rgba(95,40,134,0.12)",
             }}
           >
             <p>
@@ -217,8 +217,8 @@ useEffect(() => {
 </p>
           </div>
         )}
+        <BottomNav />
       </div>
-      <BottomNav />
     </main>
   );
 }

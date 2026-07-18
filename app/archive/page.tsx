@@ -47,17 +47,17 @@ export default function ArchivePage() {
     
       style={{
         minHeight: "100vh",
-        fontFamily: "sans-serif",
-        background: "linear-gradient(to bottom right, #fef3c7, #ecfccb, #e0f2fe)",
       }}
     >
-      <div className="page-shell">
-        <p style={{ fontSize: "12px", letterSpacing: "0.2em", color: "#78716c" }}>
+      <div className="page-shell pm-page-shell">
+        <p className="pm-eyebrow">
           PSALM MORNING
         </p>
 
-        <h1>지난 시편</h1>
-        <p>이전에 등록된 시편 묵상 목록입니다.</p>
+        <h1 className="pm-page-title">지난 시편</h1>
+        <p className="pm-page-intro">
+          지나온 아침의 말씀과 묵상을 다시 천천히 만나보세요.
+        </p>
 
         {isLoading ? (
           <p role="status">보관함을 불러오고 있습니다...</p>
@@ -82,14 +82,15 @@ export default function ArchivePage() {
           <Link
   key={psalm.id}
   href={`/archive/${psalm.devotional_date}`}
+  className="pm-list-card"
   style={{
     display: "block",
     marginTop: "16px",
     padding: "22px",
     borderRadius: "20px",
-    background: "rgba(255,255,255,0.78)",
-    border: "1px solid rgba(255,255,255,0.8)",
-    boxShadow: "0 8px 20px rgba(0,0,0,0.06)",
+    background: "rgba(255,253,248,0.92)",
+    border: "1px solid rgba(95,40,134,0.12)",
+    boxShadow: "0 10px 26px rgba(63,35,76,0.07)",
     color: "inherit",
     textDecoration: "none",
   }}
@@ -110,11 +111,11 @@ export default function ArchivePage() {
     }}
   />
 )}
-              <p style={{ color: "#78716c", fontSize: "14px" }}>
+              <p style={{ color: "#7b42a0", fontSize: "14px", fontWeight: 650 }}>
                 {formatKoreanDate(psalm.devotional_date)}
               </p>
 
-              <h2>{psalm.psalm_reference}</h2>
+              <h2 style={{ color: "#3f1d57" }}>{psalm.psalm_reference}</h2>
 
               <p
                 style={{
@@ -123,6 +124,7 @@ export default function ArchivePage() {
                   WebkitLineClamp: 3,
                   WebkitBoxOrient: "vertical",
                   overflow: "hidden",
+                  color: "#554d59",
                 }}
               >
                 {psalm.reflection || "묵상이 등록되지 않았습니다."}
@@ -131,8 +133,8 @@ export default function ArchivePage() {
             
           ))
         )}
+        <BottomNav />
       </div>
-      <BottomNav />
     </main>
   );
 }

@@ -47,9 +47,9 @@ export default function PsalmDetailPage({
 
   if (isLoading || errorMessage || !psalm) {
     return (
-      <main className="page-main" style={{ fontFamily: "sans-serif" }}>
-        <div className="page-shell">
-          <Link href="/archive">← 지난 시편으로</Link>
+      <main className="page-main">
+        <div className="page-shell pm-page-shell">
+          <Link href="/archive" style={{ color: "#5f2886" }}>← 지난 시편으로</Link>
           <p role={errorMessage ? "alert" : "status"} style={{ marginTop: "24px" }}>
             {isLoading
               ? "시편 묵상을 불러오고 있습니다..."
@@ -66,50 +66,47 @@ export default function PsalmDetailPage({
     
       style={{
         minHeight: "100vh",
-        background:
-          "linear-gradient(to bottom right, #fef3c7, #ecfccb, #e0f2fe)",
-        fontFamily: "sans-serif",
       }}
     >
-              {psalm.image_url && (
-  <Image
-    src={psalm.image_url}
-    alt={psalm.psalm_reference}
-    width={1200}
-    height={800}
-    unoptimized
-    loading="eager"
-    style={{
-      width: "100%",
-      height: "auto",
-      borderRadius: "24px",
-      marginBottom: "24px",
-    }}
-  />
-)}
       <div
-        className="page-shell"
-        style={{
-          background: "rgba(255,255,255,0.8)",
-          borderRadius: "32px",
-          padding: "32px",
-        }}
+        className="page-shell pm-page-shell"
       >
-        <Link href="/archive" style={{ color: "#57534e" }}>
+        <Link href="/archive" style={{ color: "#5f2886", fontWeight: 650 }}>
           ← 지난 시편으로
         </Link>
 
-        <p style={{ color: "#78716c", marginTop: "24px" }}>
+        <p style={{ color: "#7b42a0", marginTop: "24px", fontWeight: 650 }}>
           {formatKoreanDate(psalm.devotional_date)}
         </p>
 
-        <h1>{psalm.psalm_reference}</h1>
+        <h1 className="pm-page-title">{psalm.psalm_reference}</h1>
+
+        {psalm.image_url && (
+          <Image
+            src={psalm.image_url}
+            alt={psalm.psalm_reference}
+            width={1200}
+            height={800}
+            unoptimized
+            loading="eager"
+            style={{
+              width: "100%",
+              height: "auto",
+              borderRadius: "24px",
+              marginTop: "24px",
+              border: "1px solid rgba(95,40,134,0.12)",
+              boxShadow: "0 14px 34px rgba(63,35,76,0.1)",
+            }}
+          />
+        )}
 
         <p
           style={{
             fontSize: "20px",
             lineHeight: 1.8,
             marginTop: "24px",
+            color: "#3f3743",
+            fontFamily: "Georgia, 'Times New Roman', serif",
           }}
         >
           {psalm.psalm_text}
@@ -120,10 +117,11 @@ export default function PsalmDetailPage({
             marginTop: "32px",
             padding: "24px",
             borderRadius: "20px",
-            background: "#fefce8",
+            background: "linear-gradient(145deg, #fffaf0, #f8f2fb)",
+            border: "1px solid rgba(95,40,134,0.12)",
           }}
         >
-          <h2>오늘의 묵상</h2>
+          <h2 style={{ color: "#3f1d57" }}>오늘의 묵상</h2>
           <p style={{ lineHeight: 1.8 }}>{psalm.reflection}</p>
         </div>
 
@@ -132,10 +130,11 @@ export default function PsalmDetailPage({
             marginTop: "24px",
             padding: "24px",
             borderRadius: "20px",
-            background: "#f0f9ff",
+            background: "linear-gradient(145deg, #f3edf8, #fffdf8)",
+            border: "1px solid rgba(95,40,134,0.12)",
           }}
         >
-          <h2>아침 기도</h2>
+          <h2 style={{ color: "#3f1d57" }}>아침 기도</h2>
           <p style={{ lineHeight: 1.8 }}>{psalm.prayer}</p>
         </div>
       </div>
