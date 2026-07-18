@@ -10,12 +10,13 @@ import AdminDashboard from "@/components/AdminDashboard";
 import {
   supabase,
 } from "@/lib/supabaseClient";
-import type { DailyPsalm, PrayerRequest } from "@/lib/types";
+import type { Announcement, DailyPsalm, PrayerRequest } from "@/lib/types";
 
 
 export default function AdminPage() {
     
   const [prayerList, setPrayerList] = useState<PrayerRequest[]>([]);
+  const [announcementList, setAnnouncementList] = useState<Announcement[]>([]);
   const [psalmReference, setPsalmReference] = useState("");
 const [scheduleList, setScheduleList] = useState<DailyPsalm[]>([]);
 const [psalmText, setPsalmText] = useState("");
@@ -221,18 +222,23 @@ setSaturdayPsalm("");
 setSundayPsalm("");
 }
 async function saveAnnouncement() {
+  if (!announcementTitle.trim() || !announcementContent.trim()) {
+    setAdminMessage("공지 제목과 내용을 입력해주세요.");
+    return;
+  }
+
   const { error } =
     await supabase
       .from("announcements")
       .insert({
         title:
-          announcementTitle,
+          announcementTitle.trim(),
 
         content:
-          announcementContent,
+          announcementContent.trim(),
 
         link_url:
-          announcementLink,
+          announcementLink.trim() || null,
 
         is_published: true,
       });
@@ -252,6 +258,7 @@ if (error) {
   setAnnouncementTitle("");
   setAnnouncementContent("");
   setAnnouncementLink("");
+  await loadAnnouncements();
 }
 
 async function saveTodayPsalm() {
@@ -306,6 +313,21 @@ if (error) {
     }
 
     setPrayerList(data || []);
+  }, []);
+
+  const loadAnnouncements = useCallback(async () => {
+    const { data, error } = await supabase
+      .from("announcements")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error(error);
+      setAdminMessage("공지 목록을 불러오는 중 문제가 발생했습니다.");
+      return;
+    }
+
+    setAnnouncementList((data || []) as Announcement[]);
   }, []);
 
   const loadTodayPsalmForAdmin = useCallback(async () => {
@@ -379,6 +401,7 @@ useEffect(() => {
 
     setCheckingLogin(false);
     void loadPrayerRequests();
+    void loadAnnouncements();
     void loadTodayPsalmForAdmin();
     void loadScheduleList();
   }
@@ -386,6 +409,7 @@ useEffect(() => {
   void checkSession();
 }, [
   loadPrayerRequests,
+  loadAnnouncements,
   loadScheduleList,
   loadTodayPsalmForAdmin,
   router,
@@ -466,6 +490,27 @@ async function saveAdminResponse(id: string, response: string) {
   setAdminMessage("운영자 응답이 저장되었습니다.");
   await loadPrayerRequests();
 }
+
+async function deleteAnnouncement(id: string, title: string) {
+  const confirmed = confirm(`"${title}" 공지를 삭제하시겠습니까?`);
+
+  if (!confirmed) return;
+
+  const { error } = await supabase
+    .from("announcements")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error(error);
+    setAdminMessage("공지 삭제 중 문제가 발생했습니다.");
+    return;
+  }
+
+  setAdminMessage("공지가 삭제되었습니다.");
+  await loadAnnouncements();
+}
+
 async function generateAiDraft() {
     if (isAiLocked) {
   setAdminMessage(
@@ -751,6 +796,105 @@ imageUrl={imageUrl}
   >
     공지 저장
   </button>
+
+  <div style={{ marginTop: "28px" }}>
+    <h3 style={{ marginBottom: "12px" }}>
+      기존 공지 ({announcementList.length})
+    </h3>
+
+    {announcementList.length === 0 ? (
+      <p style={{ color: "#64748b" }}>등록된 공지가 없습니다.</p>
+    ) : (
+      <div style={{ display: "grid", gap: "12px" }}>
+        {announcementList.map((announcement) => (
+          <article
+            key={announcement.id}
+            style={{
+              padding: "18px",
+              borderRadius: "16px",
+              border: "1px solid #e2e8f0",
+              background: "white",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+                gap: "16px",
+                flexWrap: "wrap",
+              }}
+            >
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <h4 style={{ margin: 0 }}>{announcement.title}</h4>
+                <p
+                  style={{
+                    margin: "8px 0 0",
+                    color: "#475569",
+                    whiteSpace: "pre-line",
+                    overflowWrap: "anywhere",
+                  }}
+                >
+                  {announcement.content}
+                </p>
+                <p
+                  style={{
+                    margin: "10px 0 0",
+                    fontSize: "13px",
+                    color: "#64748b",
+                  }}
+                >
+                  {new Intl.DateTimeFormat("ko-KR", {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                    timeZone: "Asia/Seoul",
+                  }).format(new Date(announcement.created_at))}
+                  {" · "}
+                  {announcement.is_published ? "공개 중" : "비공개"}
+                </p>
+                {announcement.link_url && (
+                  <a
+                    href={announcement.link_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{
+                      display: "inline-block",
+                      marginTop: "8px",
+                      color: "#2563eb",
+                      overflowWrap: "anywhere",
+                    }}
+                  >
+                    관련 링크 열기
+                  </a>
+                )}
+              </div>
+
+              <button
+                type="button"
+                onClick={() =>
+                  void deleteAnnouncement(
+                    announcement.id,
+                    announcement.title
+                  )
+                }
+                style={{
+                  padding: "10px 14px",
+                  borderRadius: "10px",
+                  border: "none",
+                  background: "#dc2626",
+                  color: "white",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                }}
+              >
+                삭제
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
+    )}
+  </div>
 </section>
 <section
   id="weekly-journey-section"
