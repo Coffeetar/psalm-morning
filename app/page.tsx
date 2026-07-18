@@ -262,19 +262,31 @@ function saveReflectionMemo() {
         <button
           className="pm-share-button"
           onClick={async () => {
-            const text = `
-${todayPsalm?.psalm_reference}
+            const text = `${todayPsalm?.psalm_reference}
 
 ${todayPsalm?.psalm_text}
 
 오늘의 묵상:
-${todayPsalm?.reflection || ""}
-`;
+${todayPsalm?.reflection || ""}`;
 
             try {
-              await navigator.clipboard.writeText(text);
-              setMessage("오늘의 시편이 클립보드에 복사되었습니다.");
-            } catch {
+              if (navigator.share) {
+                await navigator.share({
+                  title: `Psalm Morning · ${todayPsalm?.psalm_reference}`,
+                  text,
+                  url: window.location.origin,
+                });
+                setMessage("오늘의 시편을 공유했습니다.");
+              } else {
+                await navigator.clipboard.writeText(
+                  `${text}\n\n${window.location.origin}`
+                );
+                setMessage("오늘의 시편과 링크가 클립보드에 복사되었습니다.");
+              }
+            } catch (error) {
+              if (error instanceof DOMException && error.name === "AbortError") {
+                return;
+              }
               setMessage("복사 중 문제가 발생했습니다.");
             }
           }}
@@ -316,6 +328,14 @@ ${todayPsalm?.reflection || ""}
 <PrayerSuccessMessage
   message={message}
   trackingCode={trackingCode}
+  onCopyTrackingCode={async () => {
+    try {
+      await navigator.clipboard.writeText(trackingCode);
+      setMessage("추적 코드가 복사되었습니다.");
+    } catch {
+      setMessage("추적 코드를 길게 눌러 복사해주세요.");
+    }
+  }}
 />
 
         <BottomNav />
