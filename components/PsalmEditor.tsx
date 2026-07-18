@@ -24,6 +24,7 @@ type PsalmEditorProps = {
 
   isPublished: boolean;
   setIsPublished: (value: boolean) => void;
+  isEditing: boolean;
 
   reflectionStyle: string;
   setReflectionStyle: (value: string) => void;
@@ -59,6 +60,7 @@ export default function PsalmEditor({
   setImageFile,
   isPublished,
   setIsPublished,
+  isEditing,
   reflectionStyle,
   setReflectionStyle,
   saveTodayPsalm,
@@ -85,7 +87,22 @@ adminMessage,
         background: "#fffaf0",
       }}
     >
-      <h2>오늘의 시편 등록</h2>
+      <h2>{isEditing ? "오늘의 시편 수정" : "오늘의 시편 등록"}</h2>
+
+      {isEditing && (
+        <p
+          role="status"
+          style={{
+            marginTop: "8px",
+            padding: "10px 12px",
+            borderRadius: "10px",
+            background: "#dcfce7",
+            color: "#166534",
+          }}
+        >
+          선택한 날짜의 기존 시편을 수정하고 있습니다.
+        </p>
+      )}
 
       <input
         type="date"
@@ -357,7 +374,7 @@ adminMessage,
           cursor: "pointer",
         }}
       >
-        오늘의 시편 저장
+        {isEditing ? "시편 변경 저장" : "오늘의 시편 저장"}
       </button>
 
       {adminMessage && (

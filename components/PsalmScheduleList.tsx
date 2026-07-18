@@ -163,6 +163,9 @@ export default function PsalmScheduleList({
 
 <div
   style={{
+    display: "flex",
+    gap: "8px",
+    flexWrap: "wrap",
     marginTop: "12px",
   }}
 >
@@ -184,6 +187,29 @@ export default function PsalmScheduleList({
 >
   미리보기 열기
 </a>
+
+  <button
+    type="button"
+    onClick={(e) => {
+      e.stopPropagation();
+      setSelectedDate(item.devotional_date);
+      document
+        .getElementById("today-psalm-section")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }}
+    style={{
+      padding: "8px 12px",
+      borderRadius: "10px",
+      border: "none",
+      background: "#2563eb",
+      fontSize: "13px",
+      color: "white",
+      cursor: "pointer",
+      lineHeight: "1",
+    }}
+  >
+    수정
+  </button>
 
   <button
     type="button"

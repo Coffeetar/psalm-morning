@@ -17,6 +17,9 @@ export default function AdminPage() {
     
   const [prayerList, setPrayerList] = useState<PrayerRequest[]>([]);
   const [announcementList, setAnnouncementList] = useState<Announcement[]>([]);
+  const [editingAnnouncementId, setEditingAnnouncementId] = useState<
+    string | null
+  >(null);
   const [psalmReference, setPsalmReference] = useState("");
 const [scheduleList, setScheduleList] = useState<DailyPsalm[]>([]);
 const [psalmText, setPsalmText] = useState("");
@@ -227,10 +230,7 @@ async function saveAnnouncement() {
     return;
   }
 
-  const { error } =
-    await supabase
-      .from("announcements")
-      .insert({
+  const announcementValues = {
         title:
           announcementTitle.trim(),
 
@@ -241,7 +241,16 @@ async function saveAnnouncement() {
           announcementLink.trim() || null,
 
         is_published: true,
-      });
+      };
+
+  const { error } = editingAnnouncementId
+    ? await supabase
+        .from("announcements")
+        .update(announcementValues)
+        .eq("id", editingAnnouncementId)
+    : await supabase
+        .from("announcements")
+        .insert(announcementValues);
 
 if (error) {
   setAdminMessage(
@@ -252,12 +261,13 @@ if (error) {
 }
 
   setAdminMessage(
-    "공지 저장 완료"
+    editingAnnouncementId ? "공지 수정 완료" : "공지 저장 완료"
   );
 
   setAnnouncementTitle("");
   setAnnouncementContent("");
   setAnnouncementLink("");
+  setEditingAnnouncementId(null);
   await loadAnnouncements();
 }
 
@@ -511,6 +521,26 @@ async function deleteAnnouncement(id: string, title: string) {
   await loadAnnouncements();
 }
 
+function editAnnouncement(announcement: Announcement) {
+  setEditingAnnouncementId(announcement.id);
+  setAnnouncementTitle(announcement.title);
+  setAnnouncementContent(announcement.content);
+  setAnnouncementLink(announcement.link_url || "");
+  setAdminMessage(`"${announcement.title}" 공지를 수정 중입니다.`);
+
+  document
+    .getElementById("announcement-section")
+    ?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function cancelAnnouncementEdit() {
+  setEditingAnnouncementId(null);
+  setAnnouncementTitle("");
+  setAnnouncementContent("");
+  setAnnouncementLink("");
+  setAdminMessage("공지 수정을 취소했습니다.");
+}
+
 async function generateAiDraft() {
     if (isAiLocked) {
   setAdminMessage(
@@ -738,7 +768,22 @@ imageUrl={imageUrl}
     background: "#f8fafc",
   }}
 >
-  <h2>공지 작성</h2>
+  <h2>{editingAnnouncementId ? "공지 수정" : "공지 작성"}</h2>
+
+  {editingAnnouncementId && (
+    <p
+      role="status"
+      style={{
+        marginTop: "8px",
+        padding: "10px 12px",
+        borderRadius: "10px",
+        background: "#ede9fe",
+        color: "#5b21b6",
+      }}
+    >
+      기존 공지를 수정하고 있습니다.
+    </p>
+  )}
 
   <input
     value={announcementTitle}
@@ -794,8 +839,28 @@ imageUrl={imageUrl}
       fontWeight: "bold",
     }}
   >
-    공지 저장
+    {editingAnnouncementId ? "공지 변경 저장" : "공지 저장"}
   </button>
+
+  {editingAnnouncementId && (
+    <button
+      type="button"
+      onClick={cancelAnnouncementEdit}
+      style={{
+        marginTop: "14px",
+        marginLeft: "8px",
+        padding: "12px 18px",
+        borderRadius: "12px",
+        border: "1px solid #94a3b8",
+        background: "white",
+        color: "#334155",
+        cursor: "pointer",
+        fontWeight: "bold",
+      }}
+    >
+      수정 취소
+    </button>
+  )}
 
   <div style={{ marginTop: "28px" }}>
     <h3 style={{ marginBottom: "12px" }}>
@@ -868,6 +933,22 @@ imageUrl={imageUrl}
                   </a>
                 )}
               </div>
+
+              <button
+                type="button"
+                onClick={() => editAnnouncement(announcement)}
+                style={{
+                  padding: "10px 14px",
+                  borderRadius: "10px",
+                  border: "none",
+                  background: "#2563eb",
+                  color: "white",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                }}
+              >
+                수정
+              </button>
 
               <button
                 type="button"
@@ -1070,6 +1151,9 @@ imageUrl={imageUrl}
   setImageUrl={setImageUrl}
   setImageFile={setImageFile}
   isPublished={isPublished}
+  isEditing={scheduleList.some(
+    (item) => item.devotional_date === selectedDate
+  )}
   setIsPublished={setIsPublished}
   saveTodayPsalm={saveTodayPsalm}
   moveSelectedDate={moveSelectedDate}
