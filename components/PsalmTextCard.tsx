@@ -22,22 +22,18 @@ export default function PsalmTextCard({
         {psalmReference}
       </h2>
 
-<div style={{ marginTop: "24px" }}>
-  <SectionTitle>
-    오늘의 말씀
-  </SectionTitle>
-</div>
-
       <div
         style={{
           ...cardStyle,
-          marginTop: "20px",
+          marginTop: "24px",
           lineHeight: 1.9,
           fontSize: "18px",
           whiteSpace: "pre-line",
         }}
       >
-        “{psalmText || ""}”
+        <SectionTitle>오늘의 말씀</SectionTitle>
+
+        <p style={{ margin: "18px 0 0" }}>“{psalmText || ""}”</p>
       </div>
     </>
   );
