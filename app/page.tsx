@@ -116,7 +116,7 @@ function saveReflectionMemo() {
 
     const newTrackingCode =
       "PM-" +
-      crypto.randomUUID().replaceAll("-", "").slice(0, 20).toUpperCase();
+      crypto.randomUUID().replaceAll("-", "").slice(0, 8).toUpperCase();
 
     const { error } = await supabase.from("prayer_requests").insert({
       request_text: trimmedPrayerRequest,

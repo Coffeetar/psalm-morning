@@ -18,8 +18,8 @@ export default function PrayerSuccessMessage({
       style={{
         ...cardStyle,
         marginTop: "20px",
-        background: "#dcfce7",
-        color: "#166534",
+        background: "linear-gradient(145deg, #f3edf8, #fffaf0)",
+        color: "#45205f",
       }}
     >
       <p>{message}</p>
@@ -30,7 +30,8 @@ export default function PrayerSuccessMessage({
             marginTop: "20px",
             padding: "20px",
             borderRadius: "20px",
-            background: "#ecfccb",
+            background: "rgba(255,255,255,0.78)",
+            border: "1px solid rgba(95,40,134,0.13)",
             textAlign: "center",
           }}
         >
@@ -40,9 +41,17 @@ export default function PrayerSuccessMessage({
 
           <div
             style={{
-              fontSize: "22px",
+              display: "inline-block",
+              maxWidth: "100%",
+              padding: "10px 14px",
+              borderRadius: "12px",
+              background: "#f0e8f5",
+              color: "#45205f",
+              fontSize: "18px",
               fontWeight: "bold",
-              letterSpacing: "2px",
+              letterSpacing: "1px",
+              lineHeight: 1.4,
+              overflowWrap: "anywhere",
             }}
           >
             {trackingCode}
