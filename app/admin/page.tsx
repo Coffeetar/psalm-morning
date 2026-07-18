@@ -790,20 +790,22 @@ imageUrl={imageUrl}
   prayerList={prayerList}
   onGenerateAiDraft={generateAiDraft}
 />
-            <button
-  onClick={handleLogout}
-  style={{
-    marginTop: "12px",
-    padding: "10px 16px",
-    borderRadius: "12px",
-    border: "none",
-    background: "#b91c1c",
-    color: "white",
-    cursor: "pointer",
-  }}
->
-  로그아웃
-</button>
+<div className="admin-toolbar">
+  <button
+    onClick={handleLogout}
+    style={{
+      padding: "10px 16px",
+      borderRadius: "12px",
+      border: "1px solid rgba(185,28,28,0.22)",
+      background: "#fff",
+      color: "#b91c1c",
+      cursor: "pointer",
+      fontWeight: 700,
+    }}
+  >
+    로그아웃
+  </button>
+</div>
 <section
   className="admin-panel"
   id="announcement-section"
@@ -1266,6 +1268,7 @@ setIsAiLocked={
 제출된 기도 제목 목록입니다.
 </p>
 <input
+  className="admin-prayer-search"
   value={prayerSearch}
   onChange={(e) => setPrayerSearch(e.target.value)}
   placeholder="기도 제목 검색"

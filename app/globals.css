@@ -230,6 +230,18 @@ button:disabled {
   font-weight: 750;
 }
 
+.admin-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+.admin-prayer-search {
+  display: block;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
 @media (max-width: 640px) {
   .home-main {
     padding: 16px 12px 28px !important;
