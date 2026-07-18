@@ -12,7 +12,7 @@ export default function ReflectionCard({
   return (
 <Card background="#fefce8">
 <SectionTitle>
-  Reflection
+  오늘의 묵상
 </SectionTitle>
 
       <p style={bodyTextStyle}>

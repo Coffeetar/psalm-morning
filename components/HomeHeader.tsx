@@ -1,3 +1,5 @@
+import { formatKoreanDate, getSeoulDateKey } from "@/lib/date";
+
 export default function HomeHeader() {
   const today = new Date();
 
@@ -12,11 +14,7 @@ export default function HomeHeader() {
       ? "🍂"
       : "❄️";
 
-  const dateText = today.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    weekday: "long",
-  });
+  const dateText = formatKoreanDate(getSeoulDateKey(today));
 
   return (
     <header
@@ -53,9 +51,9 @@ export default function HomeHeader() {
           fontStyle: "italic",
         }}
       >
-        Pause for a moment.
+        잠시 멈추어 마음을 가다듬어 보세요.
         <br />
-        Let the Psalm guide your morning.
+        오늘 아침, 시편의 말씀을 따라 걸어보세요.
       </p>
     </header>
   );

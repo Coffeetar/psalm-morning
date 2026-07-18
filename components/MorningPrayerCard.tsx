@@ -12,7 +12,7 @@ export default function MorningPrayerCard({
   return (
 <Card background="#f0f9ff">
 <SectionTitle>
-  Morning Prayer
+  아침 기도
 </SectionTitle>
 
       <p style={bodyTextStyle}>

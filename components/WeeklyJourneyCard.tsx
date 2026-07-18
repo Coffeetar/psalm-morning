@@ -7,6 +7,17 @@ type WeeklyJourneyCardProps = {
 };
 import { cardStyle } from "@/lib/theme";
 import SectionTitle from "@/components/SectionTitle";
+
+const WEEKDAY_LABELS: Record<string, string> = {
+  Monday: "월요일",
+  Tuesday: "화요일",
+  Wednesday: "수요일",
+  Thursday: "목요일",
+  Friday: "금요일",
+  Saturday: "토요일",
+  Sunday: "주일",
+};
+
 export default function WeeklyJourneyCard({
   weeklyJourney,
 }: WeeklyJourneyCardProps) {
@@ -38,7 +49,7 @@ export default function WeeklyJourneyCard({
           margin: 0,
         }}
       >
-        Weekly Psalm Journey
+        한 주의 말씀
       </p>
 
 <SectionTitle>
@@ -61,7 +72,7 @@ export default function WeeklyJourneyCard({
       {weeklyJourney[0]?.theme_image_url && (
         <Image
           src={weeklyJourney[0].theme_image_url}
-          alt="Weekly Theme"
+          alt="이번 주 시편 여정"
           width={1200}
           height={600}
           unoptimized
@@ -138,7 +149,7 @@ export default function WeeklyJourneyCard({
             >
               <strong>
                 {isToday ? "● " : "○ "}
-                {item.weekday}
+                {WEEKDAY_LABELS[item.weekday] || item.weekday}
               </strong>
 
               <span>{item.psalm_reference}</span>

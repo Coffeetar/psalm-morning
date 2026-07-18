@@ -269,7 +269,7 @@ ${todayPsalm?.psalm_reference}
 
 ${todayPsalm?.psalm_text}
 
-Reflection:
+오늘의 묵상:
 ${todayPsalm?.reflection || ""}
 `;
 

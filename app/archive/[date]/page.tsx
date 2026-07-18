@@ -123,7 +123,7 @@ export default function PsalmDetailPage({
             background: "#fefce8",
           }}
         >
-          <h2>Reflection</h2>
+          <h2>오늘의 묵상</h2>
           <p style={{ lineHeight: 1.8 }}>{psalm.reflection}</p>
         </div>
 
@@ -135,7 +135,7 @@ export default function PsalmDetailPage({
             background: "#f0f9ff",
           }}
         >
-          <h2>Morning Prayer</h2>
+          <h2>아침 기도</h2>
           <p style={{ lineHeight: 1.8 }}>{psalm.prayer}</p>
         </div>
       </div>

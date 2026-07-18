@@ -24,7 +24,7 @@ export default function PsalmTextCard({
 
 <div style={{ marginTop: "24px" }}>
   <SectionTitle>
-    Psalm Text
+    오늘의 말씀
   </SectionTitle>
 </div>
 
