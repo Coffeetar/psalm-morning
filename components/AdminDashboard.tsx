@@ -57,10 +57,10 @@ export default function AdminDashboard({
         <div
   className="admin-stat-card"
   style={{
-    marginTop: "24px",
     padding: "18px",
     borderRadius: "18px",
     background: "rgba(255,255,255,0.82)",
+    height: "100%",
   }}
 >
   <strong>오늘의 체크리스트</strong>
@@ -174,4 +174,5 @@ const dashboardCardStyle = {
   padding: "16px",
   borderRadius: "18px",
   background: "rgba(255,255,255,0.78)",
+  height: "100%",
 };

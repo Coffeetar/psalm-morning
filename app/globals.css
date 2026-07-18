@@ -220,6 +220,7 @@ button:disabled {
 .admin-stat-card {
   border: 1px solid rgba(95, 40, 134, 0.1);
   background: rgba(255, 255, 255, 0.78) !important;
+  align-self: stretch;
 }
 
 .admin-section-label {
