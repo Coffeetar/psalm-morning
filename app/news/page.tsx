@@ -3,9 +3,13 @@
 import { useEffect, useState } from "react";
 import BottomNav from "@/components/BottomNav";
 import { supabase } from "@/lib/supabaseClient";
+import type { Announcement } from "@/lib/types";
 
 export default function NewsPage() {
-    const [announcements, setAnnouncements] = useState<any[]>([]);
+    const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState("");
+    const [reloadKey, setReloadKey] = useState(0);
 
 useEffect(() => {
   async function loadAnnouncements() {
@@ -17,35 +21,38 @@ useEffect(() => {
 
     if (error) {
       console.error(error);
+      setErrorMessage("공지 사항을 불러오지 못했습니다.");
+      setIsLoading(false);
       return;
     }
 
     setAnnouncements(data || []);
+    setErrorMessage("");
+    setIsLoading(false);
   }
 
-  loadAnnouncements();
-}, []);
+  void loadAnnouncements();
+}, [reloadKey]);
   return (
     <main
+      className="page-main"
       style={{
         minHeight: "100vh",
-        padding: "40px",
         fontFamily: "sans-serif",
         background:
           "linear-gradient(to bottom right, #fef3c7, #ecfccb, #e0f2fe)",
       }}
     >
       <div
+        className="page-shell"
         style={{
-          maxWidth: "700px",
-          margin: "0 auto",
           background: "rgba(255,255,255,0.85)",
           borderRadius: "28px",
           padding: "32px",
         }}
       >
         
-        <h1>공지 사항</h1>
+        <h1>Psalm Morning 소식</h1>
 
         <p style={{ lineHeight: 1.7, color: "#57534e" }}>
           Psalm Morning의 소식과 온라인 기도회 안내를 전합니다.
@@ -132,7 +139,30 @@ useEffect(() => {
 
   카톡 오픈채팅 보기
 </a>
-{announcements.map((item) => (
+        </section>
+
+        <section aria-labelledby="announcement-heading" style={{ marginTop: "32px" }}>
+          <h2 id="announcement-heading">운영자 공지</h2>
+
+{isLoading ? (
+  <p role="status">공지 사항을 불러오고 있습니다...</p>
+) : errorMessage ? (
+  <div role="alert">
+    <p>{errorMessage}</p>
+    <button
+      type="button"
+      onClick={() => {
+        setIsLoading(true);
+        setErrorMessage("");
+        setReloadKey((value) => value + 1);
+      }}
+    >
+      다시 시도
+    </button>
+  </div>
+) : announcements.length === 0 ? (
+  <p>현재 등록된 공지가 없습니다.</p>
+) : announcements.map((item) => (
   <section
     key={item.id}
     style={{

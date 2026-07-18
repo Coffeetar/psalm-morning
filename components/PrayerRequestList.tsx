@@ -1,5 +1,7 @@
+import type { PrayerRequest } from "@/lib/types";
+
 type PrayerRequestListProps = {
-  prayerList: any[];
+  prayerList: PrayerRequest[];
   saveAdminResponse: (id: string, response: string) => void;
   markAsPrayed: (id: string) => void;
   deletePrayerRequest: (id: string) => void;

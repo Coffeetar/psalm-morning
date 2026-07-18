@@ -1,21 +1,23 @@
 "use client";
 
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import PsalmScheduleList from "@/components/PsalmScheduleList";
 import PrayerRequestList from "@/components/PrayerRequestList";
 import PsalmEditor from "@/components/PsalmEditor";
+import AdminDashboard from "@/components/AdminDashboard";
 import {
   supabase,
 } from "@/lib/supabaseClient";
+import type { DailyPsalm, PrayerRequest } from "@/lib/types";
 
 
 export default function AdminPage() {
     
-  const [prayerList, setPrayerList] = useState<any[]>([]);
+  const [prayerList, setPrayerList] = useState<PrayerRequest[]>([]);
   const [psalmReference, setPsalmReference] = useState("");
-const [scheduleList, setScheduleList] = useState<any[]>([]);
+const [scheduleList, setScheduleList] = useState<DailyPsalm[]>([]);
 const [psalmText, setPsalmText] = useState("");
 const [reflectionText, setReflectionText] = useState("");
 const [showPastPsalms, setShowPastPsalms] = useState(false);
@@ -38,6 +40,10 @@ const [
 const [
   journeyTheme,
   setJourneyTheme,
+] = useState("");
+const [
+  journeyIntroduction,
+  setJourneyIntroduction,
 ] = useState("");
 const [
   journeyThemeImage,
@@ -88,15 +94,12 @@ const [reflectionStyle, setReflectionStyle] =
   useState("general");
   const [aiVersion, setAiVersion] =
   useState(1);
-  const [
-  imagePrompt,
-  setImagePrompt,
-] = useState("");
+  const [, setImagePrompt] = useState("");
 const [
   isAiLocked,
   setIsAiLocked,
 ] = useState(false);
-const [prayerFilter, setPrayerFilter] = useState(
+const [prayerFilter] = useState(
   "all"
 );
 const [selectedDate, setSelectedDate] = useState(
@@ -106,50 +109,6 @@ const [selectedDate, setSelectedDate] = useState(
 const ADMIN_EMAIL = "prnate7936@gmail.com";
 
 
-    
-  new Date().toISOString().slice(0, 10)
-  
-  
-
-useEffect(() => {
-  async function checkSession() {
-const { data } =
-  await supabase.auth.getSession();
-
-if (!data.session) {
-  router.push("/admin/login");
-  return;
-}
-
-const userEmail =
-  data.session.user.email;
-
-if (
-  userEmail !== ADMIN_EMAIL
-) {
-  await supabase.auth.signOut();
-
-  router.push(
-    "/admin/login"
-  );
-
-  return;
-}
-
-    setCheckingLogin(false);
-    loadPrayerRequests();
-    loadTodayPsalmForAdmin();
-    loadScheduleList();
-  }
-
-  checkSession();
-}, [router]);
-useEffect(() => {
-  loadTodayPsalmForAdmin();
-}, [selectedDate]);
-useEffect(() => {
-  loadScheduleList();
-}, [showPastPsalms]);
 async function uploadImage(): Promise<string> {
   if (!imageFile) return "";
 
@@ -186,7 +145,12 @@ if (error) {
     setImageUrl(publicUrl);
   return publicUrl;
 }
+
 async function saveWeeklyJourney() {
+    setAdminMessage("saveWeeklyJourney 함수가 실행되었습니다.");
+    setAdminMessage(
+  `저장 직전 안내문: ${journeyIntroduction || "비어 있음"}`
+);
   const rows = [
     { weekday: "Monday", psalm_reference: mondayPsalm },
     { weekday: "Tuesday", psalm_reference: tuesdayPsalm },
@@ -202,6 +166,8 @@ async function saveWeeklyJourney() {
       theme: journeyTheme,
       theme_image_url:
   journeyThemeImage,
+  introduction:
+journeyIntroduction,
       is_published: true,
     }));
 
@@ -223,9 +189,10 @@ if (deleteError) {
 
   return;
 }
-  const { error } = await supabase
-    .from("weekly_psalm_journey")
-    .insert(rows);
+const { data, error } = await supabase
+  .from("weekly_psalm_journey")
+  .insert(rows)
+  .select("weekday, psalm_reference, theme, introduction");
 
   if (error) {
 console.error(
@@ -239,8 +206,19 @@ console.error(
 
     return;
   }
-
-  setAdminMessage("주간 시편 여정 저장 완료");
+setAdminMessage(
+  `주간 시편 여정 저장 완료: ${JSON.stringify(data)}`
+);
+  setJourneyTheme("");
+setJourneyThemeImage("");
+setJourneyIntroduction("");
+setMondayPsalm("");
+setTuesdayPsalm("");
+setWednesdayPsalm("");
+setThursdayPsalm("");
+setFridayPsalm("");
+setSaturdayPsalm("");
+setSundayPsalm("");
 }
 async function saveAnnouncement() {
   const { error } =
@@ -316,7 +294,7 @@ if (error) {
   await loadScheduleList();
   setImageFile(null);
 }
-  async function loadPrayerRequests() {
+  const loadPrayerRequests = useCallback(async () => {
     const { data, error } = await supabase
       .from("prayer_requests")
       .select("*")
@@ -328,8 +306,9 @@ if (error) {
     }
 
     setPrayerList(data || []);
-  }
-  async function loadTodayPsalmForAdmin() {
+  }, []);
+
+  const loadTodayPsalmForAdmin = useCallback(async () => {
     
 const today = selectedDate;
 
@@ -358,8 +337,9 @@ const today = selectedDate;
   setIsPublished(
   data.is_published || false
 );
-}
-async function loadScheduleList() {
+}, [selectedDate]);
+
+const loadScheduleList = useCallback(async () => {
   const today = new Date().toISOString().slice(0, 10);
 
   let query = supabase
@@ -380,7 +360,95 @@ async function loadScheduleList() {
   }
 
   setScheduleList(data || []);
-}
+}, [showPastPsalms]);
+
+useEffect(() => {
+  async function checkSession() {
+    const { data } = await supabase.auth.getUser();
+
+    if (!data.user) {
+      router.push("/admin/login");
+      return;
+    }
+
+    if (data.user.email !== ADMIN_EMAIL) {
+      await supabase.auth.signOut();
+      router.push("/admin/login");
+      return;
+    }
+
+    setCheckingLogin(false);
+    void loadPrayerRequests();
+    void loadTodayPsalmForAdmin();
+    void loadScheduleList();
+  }
+
+  void checkSession();
+}, [
+  loadPrayerRequests,
+  loadScheduleList,
+  loadTodayPsalmForAdmin,
+  router,
+]);
+
+useEffect(() => {
+  async function refreshSelectedPsalm() {
+    const { data, error } = await supabase
+      .from("daily_psalms")
+      .select("*")
+      .eq("devotional_date", selectedDate)
+      .single();
+
+    if (error) {
+      setPsalmReference("");
+      setPsalmText("");
+      setReflectionText("");
+      setPrayerText("");
+      setImageUrl("");
+      setImageFile(null);
+      setAdminMessage(
+        "선택한 날짜에 등록된 시편이 없습니다. 새로 입력할 수 있습니다."
+      );
+      return;
+    }
+
+    setPsalmReference(data.psalm_reference || "");
+    setPsalmText(data.psalm_text || "");
+    setReflectionText(data.reflection || "");
+    setPrayerText(data.prayer || "");
+    setImageUrl(data.image_url || "");
+    setIsPublished(data.is_published || false);
+  }
+
+  void refreshSelectedPsalm();
+}, [selectedDate]);
+
+useEffect(() => {
+  async function refreshSchedule() {
+    const today = new Date().toISOString().slice(0, 10);
+    let query = supabase
+      .from("daily_psalms")
+      .select("*")
+      .order("devotional_date", { ascending: true })
+      .limit(20);
+
+    if (!showPastPsalms) {
+      query = query.gte("devotional_date", today);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    setScheduleList(data || []);
+  }
+
+  void refreshSchedule();
+}, [showPastPsalms]);
+
 async function saveAdminResponse(id: string, response: string) {
   const { error } = await supabase
     .from("prayer_requests")
@@ -416,10 +484,19 @@ async function generateAiDraft() {
 let response;
 
 try {
+  const { data: sessionData } = await supabase.auth.getSession();
+  const accessToken = sessionData.session?.access_token;
+
+  if (!accessToken) {
+    setAdminMessage("로그인 세션이 만료되었습니다. 다시 로그인해주세요.");
+    return;
+  }
+
   response = await fetch("/api/generate-devotional", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     },
 body: JSON.stringify({
   psalmReference,
@@ -470,43 +547,12 @@ setAdminMessage(
 );
 }
 if (checkingLogin) {
-    const totalPrayerCount = prayerList.length;
-
-const pendingPrayerCount = prayerList.filter(
-  (item) => !item.is_prayed
-).length;
-
-const donePrayerCount = prayerList.filter(
-  (item) => item.is_prayed
-).length;
-
-const newResponseCount = prayerList.filter(
-  (item) =>
-    item.admin_response &&
-    !item.is_response_read
-).length;
   return (
     <main style={{ padding: "40px", fontFamily: "sans-serif" }}>
       <p>관리자 로그인 상태를 확인하는 중입니다...</p>
     </main>
   );
 }
-
-
-
-const pendingPrayerCount = prayerList.filter(
-  (item) => !item.is_prayed
-).length;
-
-const donePrayerCount = prayerList.filter(
-  (item) => item.is_prayed
-).length;
-
-const newResponseCount = prayerList.filter(
-  (item) =>
-    item.admin_response &&
-    !item.is_response_read
-).length;
 async function deletePsalm(date: string) {
   const confirmed = confirm(
     `${date} 시편을 삭제하시겠습니까?`
@@ -614,6 +660,14 @@ function getDayLabel(dateString: string) {
     
     <main style={{ padding: "40px", fontFamily: "sans-serif" }}>
       <h1>Psalm Morning Admin</h1>
+<AdminDashboard
+imageUrl={imageUrl}
+  selectedDate={selectedDate}
+  psalmReference={psalmReference}
+  isPublished={isPublished}
+  prayerList={prayerList}
+  onGenerateAiDraft={generateAiDraft}
+/>
             <button
   onClick={handleLogout}
   style={{
@@ -629,6 +683,7 @@ function getDayLabel(dateString: string) {
   로그아웃
 </button>
 <section
+  id="announcement-section"
   style={{
     marginTop: "30px",
     marginBottom: "40px",
@@ -698,6 +753,7 @@ function getDayLabel(dateString: string) {
   </button>
 </section>
 <section
+  id="weekly-journey-section"
   style={{
     marginTop: "30px",
     marginBottom: "40px",
@@ -711,11 +767,7 @@ function getDayLabel(dateString: string) {
 
   <input
     value={journeyTheme}
-    onChange={(e) =>
-      setJourneyTheme(
-        e.target.value
-      )
-    }
+    onChange={(e) => setJourneyTheme(e.target.value)}
     placeholder="예: 늦봄의 소망"
     style={{
       width: "100%",
@@ -727,12 +779,36 @@ function getDayLabel(dateString: string) {
   />
 
   <input
+    value={journeyThemeImage}
+    onChange={(e) => setJourneyThemeImage(e.target.value)}
+    placeholder="테마 이미지 URL"
+    style={{
+      width: "100%",
+      padding: "14px",
+      marginTop: "12px",
+      borderRadius: "12px",
+      border: "1px solid #ccc",
+    }}
+  />
+
+  <textarea
+    value={journeyIntroduction}
+    onChange={(e) => setJourneyIntroduction(e.target.value)}
+    placeholder="이번 주 묵상 안내문"
+    style={{
+      width: "100%",
+      minHeight: "120px",
+      padding: "14px",
+      marginTop: "12px",
+      borderRadius: "12px",
+      border: "1px solid #ccc",
+      fontSize: "15px",
+    }}
+  />
+
+  <input
     value={mondayPsalm}
-    onChange={(e) =>
-      setMondayPsalm(
-        e.target.value
-      )
-    }
+    onChange={(e) => setMondayPsalm(e.target.value)}
     placeholder="월요일"
     style={{
       width: "100%",
@@ -740,29 +816,10 @@ function getDayLabel(dateString: string) {
       marginTop: "12px",
     }}
   />
-<input
-  value={journeyThemeImage}
-  onChange={(e) =>
-    setJourneyThemeImage(
-      e.target.value
-    )
-  }
-  placeholder="테마 이미지 URL"
-  style={{
-    width: "100%",
-    padding: "14px",
-    marginTop: "12px",
-    borderRadius: "12px",
-    border: "1px solid #ccc",
-  }}
-/>
+
   <input
     value={tuesdayPsalm}
-    onChange={(e) =>
-      setTuesdayPsalm(
-        e.target.value
-      )
-    }
+    onChange={(e) => setTuesdayPsalm(e.target.value)}
     placeholder="화요일"
     style={{
       width: "100%",
@@ -773,11 +830,7 @@ function getDayLabel(dateString: string) {
 
   <input
     value={wednesdayPsalm}
-    onChange={(e) =>
-      setWednesdayPsalm(
-        e.target.value
-      )
-    }
+    onChange={(e) => setWednesdayPsalm(e.target.value)}
     placeholder="수요일"
     style={{
       width: "100%",
@@ -788,11 +841,7 @@ function getDayLabel(dateString: string) {
 
   <input
     value={thursdayPsalm}
-    onChange={(e) =>
-      setThursdayPsalm(
-        e.target.value
-      )
-    }
+    onChange={(e) => setThursdayPsalm(e.target.value)}
     placeholder="목요일"
     style={{
       width: "100%",
@@ -803,11 +852,7 @@ function getDayLabel(dateString: string) {
 
   <input
     value={fridayPsalm}
-    onChange={(e) =>
-      setFridayPsalm(
-        e.target.value
-      )
-    }
+    onChange={(e) => setFridayPsalm(e.target.value)}
     placeholder="금요일"
     style={{
       width: "100%",
@@ -818,11 +863,7 @@ function getDayLabel(dateString: string) {
 
   <input
     value={saturdayPsalm}
-    onChange={(e) =>
-      setSaturdayPsalm(
-        e.target.value
-      )
-    }
+    onChange={(e) => setSaturdayPsalm(e.target.value)}
     placeholder="토요일"
     style={{
       width: "100%",
@@ -833,11 +874,7 @@ function getDayLabel(dateString: string) {
 
   <input
     value={sundayPsalm}
-    onChange={(e) =>
-      setSundayPsalm(
-        e.target.value
-      )
-    }
+    onChange={(e) => setSundayPsalm(e.target.value)}
     placeholder="주일"
     style={{
       width: "100%",
@@ -873,7 +910,7 @@ function getDayLabel(dateString: string) {
   getDayLabel={getDayLabel}
 />
 
-  
+  <div id="today-psalm-section"></div>
 <PsalmEditor
   selectedDate={selectedDate}
   setSelectedDate={setSelectedDate}

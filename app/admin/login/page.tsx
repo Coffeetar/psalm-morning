@@ -13,13 +13,14 @@ export default function AdminLoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   useEffect(() => {
   async function checkLoggedIn() {
     const { data } =
-      await supabase.auth.getSession();
+      await supabase.auth.getUser();
 
     if (
-      data.session
+      data.user?.email === "prnate7936@gmail.com"
     ) {
       router.push("/admin");
     }
@@ -29,6 +30,16 @@ export default function AdminLoginPage() {
 }, [router]);
 
   async function handleLogin() {
+    if (!email.trim() || !password) {
+      setMessage("이메일과 비밀번호를 입력해주세요.");
+      return;
+    }
+
+    if (isLoggingIn) return;
+
+    setIsLoggingIn(true);
+    setMessage("");
+
 const {
   data,
   error,
@@ -41,6 +52,7 @@ password,
 
     if (error) {
       setMessage("로그인에 실패했습니다.");
+      setIsLoggingIn(false);
       return;
     }
 
@@ -56,6 +68,7 @@ if (
   setMessage(
     "관리자 계정이 아닙니다."
   );
+  setIsLoggingIn(false);
 
   return;
 }
@@ -94,10 +107,16 @@ router.push("/admin");
   Admin Login
 </h1>
 
+        <label htmlFor="admin-email" style={{ display: "block", fontWeight: "bold" }}>
+          관리자 이메일
+        </label>
         <input
+          id="admin-email"
+          type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="관리자 이메일"
+          autoComplete="username"
           style={{
             width: "100%",
             padding: "16px",
@@ -105,11 +124,19 @@ router.push("/admin");
           }}
         />
 
+        <label
+          htmlFor="admin-password"
+          style={{ display: "block", marginTop: "16px", fontWeight: "bold" }}
+        >
+          비밀번호
+        </label>
         <input
+          id="admin-password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="비밀번호"
+          autoComplete="current-password"
           style={{
             width: "100%",
             padding: "16px",
@@ -120,6 +147,7 @@ router.push("/admin");
       <button
   type="button"
   onClick={handleLogin}
+  disabled={isLoggingIn}
   style={{
     width: "100%",
     marginTop: "18px",
@@ -130,13 +158,14 @@ router.push("/admin");
     color: "white",
     fontSize: "15px",
     fontWeight: "bold",
-    cursor: "pointer",
+    cursor: isLoggingIn ? "not-allowed" : "pointer",
+    opacity: isLoggingIn ? 0.65 : 1,
   }}
 >
-  로그인
+  {isLoggingIn ? "로그인 중..." : "로그인"}
 </button>
 
-        {message && <p>{message}</p>}
+        {message && <p role="alert">{message}</p>}
       </div>
     </main>
   );

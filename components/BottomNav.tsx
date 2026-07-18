@@ -9,6 +9,7 @@ export default function BottomNav() {
     const pathname = usePathname();
   return (
     <nav
+      aria-label="주요 메뉴"
       style={{
         marginTop: "40px",
         padding: "14px",
@@ -16,6 +17,7 @@ export default function BottomNav() {
         background: "rgba(255,255,255,0.9)",
         display: "flex",
         justifyContent: "center",
+        flexWrap: "wrap",
         gap: "12px",
         boxShadow:
           "0 8px 24px rgba(0,0,0,0.08)",
@@ -23,19 +25,20 @@ export default function BottomNav() {
     >
       <Link
         href="/"
+        aria-current={pathname === "/" ? "page" : undefined}
         style={{
           textDecoration: "none",
           padding: "10px 18px",
           borderRadius: "999px",
           background:
-pathname === "/archive"
-? "#2563eb"
-: "#dbeafe",
+            pathname === "/"
+              ? "#2563eb"
+              : "#dbeafe",
 
-color:
-pathname === "/archive"
-? "white"
-: "#444",
+          color:
+            pathname === "/"
+              ? "white"
+              : "#444",
         }}
       >
         오늘
@@ -43,17 +46,18 @@ pathname === "/archive"
 
       <Link
         href="/archive"
+        aria-current={pathname.startsWith("/archive") ? "page" : undefined}
         style={{
           textDecoration: "none",
           padding: "10px 18px",
           borderRadius: "999px",
 background:
-pathname === "/archive"
+pathname.startsWith("/archive")
 ? "#2563eb"
 : "#c7d2fe",
 
 color:
-pathname === "/archive"
+pathname.startsWith("/archive")
 ? "white"
 : "#444",
         }}
@@ -63,6 +67,7 @@ pathname === "/archive"
 
       <Link
         href="/my-prayers"
+        aria-current={pathname === "/my-prayers" ? "page" : undefined}
         style={{
           textDecoration: "none",
           padding: "10px 18px",
@@ -83,6 +88,7 @@ pathname === "/my-prayers"
       </Link>
       <Link
   href="/news"
+  aria-current={pathname === "/news" ? "page" : undefined}
   style={{
     textDecoration: "none",
     padding: "10px 18px",

@@ -1,6 +1,8 @@
+import type { DailyPsalm } from "@/lib/types";
+
 type PsalmScheduleListProps = {
   openPreview?: boolean;
-  scheduleList: any[];
+  scheduleList: DailyPsalm[];
   selectedDate: string;
   setSelectedDate: (
     date: string

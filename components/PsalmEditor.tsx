@@ -1,4 +1,6 @@
 
+import Image from "next/image";
+
 type PsalmEditorProps = {
   selectedDate: string;
   setSelectedDate: (date: string) => void;
@@ -234,11 +236,15 @@ adminMessage,
         <div style={{ marginTop: "16px" }}>
           <p style={{ fontWeight: "bold" }}>이미지 미리보기</p>
 
-          <img
+          <Image
             src={imageUrl}
             alt="Psalm preview"
+            width={1200}
+            height={800}
+            unoptimized
             style={{
               width: "100%",
+              height: "auto",
               maxWidth: "420px",
               borderRadius: "18px",
               marginTop: "8px",
