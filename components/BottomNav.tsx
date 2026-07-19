@@ -9,6 +9,7 @@ export default function BottomNav() {
     const pathname = usePathname();
   return (
     <nav
+      className="pm-bottom-nav"
       aria-label="주요 메뉴"
       style={{
         marginTop: "40px",

@@ -25,12 +25,14 @@ export default function HomeHeader() {
       }}
     >
       <p
+        className="home-brand-title"
         style={{
-          fontSize: "14px",
+          fontSize: "19px",
           color: "#5f2886",
-          letterSpacing: "3px",
+          letterSpacing: "2.5px",
           textTransform: "uppercase",
-          fontWeight: 750,
+          fontWeight: 800,
+          lineHeight: 1.3,
         }}
       >
         {season} Psalm Morning

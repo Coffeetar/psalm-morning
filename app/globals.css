@@ -277,4 +277,23 @@ button:disabled {
     padding: 20px 16px !important;
     border-radius: 18px !important;
   }
+
+  .home-brand-title {
+    font-size: 18px !important;
+  }
+
+  .pm-bottom-nav {
+    flex-wrap: nowrap !important;
+    gap: 6px !important;
+    padding: 10px 8px !important;
+  }
+
+  .pm-bottom-nav .pm-nav-link {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 10px 3px !important;
+    text-align: center;
+    white-space: nowrap;
+    font-size: 13px;
+  }
 }
