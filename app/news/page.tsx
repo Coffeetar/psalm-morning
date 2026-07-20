@@ -46,10 +46,6 @@ useEffect(() => {
         <p className="pm-eyebrow">PSALM MORNING</p>
         <h1 className="pm-page-title">Psalm Morning 소식</h1>
 
-        <p className="pm-page-intro">
-          Psalm Morning의 소식과 온라인 기도회 안내를 전합니다.
-        </p>
-
         <section
           style={{
             marginTop: "24px",
@@ -59,10 +55,12 @@ useEffect(() => {
             border: "1px solid rgba(95,40,134,0.12)",
           }}
         >
-          <h2 style={{ color: "#3f1d57" }}>온라인 아침 기도회</h2>
+          <h2 style={{ color: "#3f1d57" }}>
+            On this Net 유튜브 채널 보기
+          </h2>
 
           <p style={{ lineHeight: 1.7 }}>
-            매일 아침 시편 말씀과 함께 기도하는 시간을 이어갑니다.
+            온디스넷 채널의 다양한 컨텐츠를 확인하실 수 있습니다.
           </p>
 
     <a
