@@ -85,7 +85,7 @@ const [hasSubmittedPrayer, setHasSubmittedPrayer] =
 
       const remainingSplashTime = Math.max(
         0,
-        1100 - (Date.now() - splashStartedAt)
+        1800 - (Date.now() - splashStartedAt)
       );
 
       window.setTimeout(() => setIsLoading(false), remainingSplashTime);
