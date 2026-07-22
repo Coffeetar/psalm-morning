@@ -242,6 +242,184 @@ button:disabled {
   margin-right: auto !important;
 }
 
+.pm-splash {
+  position: relative;
+  display: grid;
+  min-height: 100svh;
+  place-items: center;
+  overflow: hidden;
+  padding: 32px;
+  background:
+    radial-gradient(circle at 50% 44%, rgba(218, 190, 238, 0.34), transparent 28%),
+    linear-gradient(145deg, #281036 0%, #5f2886 52%, #371747 100%);
+  color: white;
+  isolation: isolate;
+}
+
+.pm-splash::before,
+.pm-splash::after {
+  position: absolute;
+  z-index: -1;
+  width: 55vmax;
+  height: 55vmax;
+  border-radius: 50%;
+  content: "";
+  filter: blur(80px);
+  opacity: 0.22;
+  animation: pm-splash-drift 3.2s ease-in-out infinite alternate;
+}
+
+.pm-splash::before {
+  top: -36vmax;
+  right: -18vmax;
+  background: #f4d675;
+}
+
+.pm-splash::after {
+  bottom: -38vmax;
+  left: -16vmax;
+  background: #c9a8df;
+  animation-delay: -1.2s;
+}
+
+.pm-splash-glow {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: rgba(255, 236, 166, 0.16);
+  filter: blur(35px);
+  animation: pm-splash-glow 1.7s ease-in-out infinite alternate;
+}
+
+.pm-splash-content {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.pm-splash-icon-wrap {
+  position: relative;
+  display: grid;
+  width: 138px;
+  height: 138px;
+  place-items: center;
+  animation: pm-splash-rise 850ms cubic-bezier(0.2, 0.85, 0.3, 1) both;
+}
+
+.pm-splash-icon {
+  position: relative;
+  z-index: 2;
+  width: 116px;
+  height: 116px;
+  border-radius: 27px;
+  box-shadow: 0 24px 54px rgba(22, 6, 31, 0.38);
+}
+
+.pm-splash-ring {
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  border-radius: 34px;
+  animation: pm-splash-ring 1.7s ease-out infinite;
+}
+
+.pm-splash-ring-two {
+  animation-delay: 550ms;
+}
+
+.pm-splash-copy {
+  margin-top: 28px;
+  animation: pm-splash-copy 700ms 280ms ease-out both;
+}
+
+.pm-splash-title {
+  margin: 0;
+  font-size: clamp(24px, 5vw, 34px);
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-indent: 0.22em;
+  text-shadow: 0 8px 28px rgba(20, 4, 29, 0.35);
+}
+
+.pm-splash-subtitle {
+  margin: 13px 0 0;
+  color: rgba(255, 255, 255, 0.76);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15px;
+  letter-spacing: 0.12em;
+}
+
+.pm-splash-status {
+  position: absolute;
+  bottom: max(34px, env(safe-area-inset-bottom));
+  color: rgba(255, 255, 255, 0.56);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  animation: pm-splash-copy 700ms 500ms ease-out both;
+}
+
+@keyframes pm-splash-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pm-splash-copy {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pm-splash-ring {
+  from {
+    opacity: 0.55;
+    transform: scale(0.82);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.38);
+  }
+}
+
+@keyframes pm-splash-glow {
+  from {
+    opacity: 0.45;
+    transform: scale(0.86);
+  }
+  to {
+    opacity: 0.78;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes pm-splash-drift {
+  from {
+    transform: translate3d(-2%, 0, 0) scale(0.95);
+  }
+  to {
+    transform: translate3d(3%, 2%, 0) scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-splash *,
+  .pm-splash::before,
+  .pm-splash::after {
+    animation: none !important;
+  }
+}
+
 @media (max-width: 640px) {
   .home-main {
     padding: 16px 12px 28px !important;

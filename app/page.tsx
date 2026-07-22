@@ -14,6 +14,7 @@ import WeeklyJourneyCard
 from "@/components/WeeklyJourneyCard";
 import TodaysJourneyCard from "@/components/TodaysJourneyCard";
 import HomeInstallGuide from "@/components/HomeInstallGuide";
+import AppSplashScreen from "@/components/AppSplashScreen";
 import { supabase } from "@/lib/supabaseClient";
 import type { DailyPsalm, WeeklyJourney } from "@/lib/types";
 import {
@@ -40,6 +41,7 @@ const [hasSubmittedPrayer, setHasSubmittedPrayer] =
 
   useEffect(() => {
     async function loadHomeData() {
+      const splashStartedAt = Date.now();
       const today = getSeoulDateKey();
 
       const [psalmResult, journeyResult] = await Promise.all([
@@ -81,7 +83,12 @@ const [hasSubmittedPrayer, setHasSubmittedPrayer] =
         setHasSavedReflection(true);
       }
 
-      setIsLoading(false);
+      const remainingSplashTime = Math.max(
+        0,
+        1100 - (Date.now() - splashStartedAt)
+      );
+
+      window.setTimeout(() => setIsLoading(false), remainingSplashTime);
     }
 
     void loadHomeData();
@@ -141,7 +148,11 @@ function saveReflectionMemo() {
     setIsSubmittingPrayer(false);
   }
 
-  if (isLoading || homeError || !todayPsalm) {
+  if (isLoading) {
+    return <AppSplashScreen />;
+  }
+
+  if (homeError || !todayPsalm) {
     return (
       <main
         className="home-state"
@@ -166,16 +177,12 @@ function saveReflectionMemo() {
           }}
         >
           <h1>
-            {isLoading
-              ? "오늘의 시편을 불러오고 있습니다"
-              : homeError
+            {homeError
                 ? "잠시 연결이 원활하지 않습니다"
                 : "오늘의 시편이 아직 준비 중입니다"}
           </h1>
           <p style={{ lineHeight: 1.7, color: "#57534e" }}>
-            {isLoading
-              ? "잠시만 기다려주세요."
-              : homeError
+            {homeError
                 ? homeError
                 : "운영자가 오늘의 말씀을 준비하고 있습니다."}
           </p>
